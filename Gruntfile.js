@@ -96,9 +96,7 @@ module.exports = function (grunt) {
       grunt.config('concat.dist.src', jsBuildFiles);
       grunt.config('recess.dist.src', lessBuildFiles);
 
-      console.log('**', jsBuildFiles);
     } else {
-      console.log('**', jsBuildFiles);
       grunt.config('concat.dist.src', jsBuildFiles.concat(['modules/*/*/*.js']));
       grunt.config('recess.dist.src', lessBuildFiles.concat(grunt.config('recess.dist.src')));
     }
