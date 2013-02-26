@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="demoApp" id="top">
+  <head>
+    <title>Angular Dataform for AngularJS</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/js/bootstrap.min.js"></script>
+    <script src="http://code.angularjs.org/1.1.3/angular.js"></script>
+    <script src="../dist/angular-dataform.js"></script>
+    <script src="js/prettify.js"></script>
+    <script src="js/demoApp.js"></script>
+
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../dist/angular-dataform.css">
+    <link rel="stylesheet" href="css/prettify.css">
+    <link rel="stylesheet" href="css/doc.css">
+    <link rel="stylesheet" href="css/demoApp.css">
+  </head>
+  <body data-spy="scroll">
+    <header class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <div class="dropdown pull-left">
+            <a class="brand dropdown-toggle" role="button" href="#"> 
+              Angular Dataform
+            </a>
+          </div>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active">
+                <a scrollto href="#top">Home</a>
+              </li>
+              <li class="dropdown">
+                <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                  Directives
+                  <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a scrollto href="#directives-tag">Tag</a></li>
+                </ul>
+              </li>
+            </ul>
+            <ul class="pull-right nav">
+              <li><a href="https://github.com/blendlabs/angular-dataform/graphs/contributors">Contributors</a></li>
+              <li class="dropdown">
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                  Need Help?
+                  <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="https://github.com/blendlabs/angular-dataform/issues?sort=updated&state=open">Angular Dataform broken or want a new feature?</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div role="main">
+
+      <header class="hero-unit" id="overview">
+        <div class="container">
+          <h1>Angular Dataform</h1>
+          <p>Reliable, componentized data form controls for <strong><a href="http://angularjs.org">AngularJS</a></strong>.</p>
+          <p class="btn-group">
+            <a class="btn btn-large" href="https://github.com/blendlabs/angular-dataform"><i class="icon-github"></i> Code on Github</a><a class="btn btn-large btn-primary" href="https://github.com/blendlabs/angular-dataform/tags"><i class="icon-download-alt icon-white"></i> Download</a>
+          </p>
+        </div>
+        <div class="bs-docs-social">
+          <div class="container">
+            <ul class="bs-docs-social-buttons">
+              <li>
+                <iframe src="http://ghbtns.com/github-btn.html?user=blendlabs&repo=angular-dataform&type=watch&count=true"
+                        allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+              </li>
+              <li>
+                <iframe src="http://ghbtns.com/github-btn.html?user=blendlabs&repo=angular-dataform&type=fork&count=true"
+                        allowtransparency="true" frameborder="0" scrolling="0" width="95" height="20"></iframe>
+              </li>
+              <li>
+                <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="angularjs">Tweet</a>
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+              </li>
+              <li>
+                <!-- Place this tag where you want the +1 button to render. -->
+                <div class="g-plusone" data-size="medium"></div>
+
+                <!-- Place this tag after the last +1 button tag. -->
+                <script type="text/javascript">
+                  (function() {
+                  var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                  po.src = 'https://apis.google.com/js/plusone.js';
+                  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+                  })();
+                </script>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </header>
+
+      <div class="container">
+
+        <section id="setup">
+          <h1>Getting Started</h1>
+          <p>Setup is easy and designed to be highly modular. Just follow these steps <strong>in order</strong>:</p>
+          <ol>
+            <li>Include AngularJS</li>
+            <li>Include Angular Dataform in one of the following ways:
+              <ul>
+                <li>Include the entire library (located in the <code>/dist</code> directory)</li>
+                <li>Include <code>/common/module.js</code> and any directives you wish to use</li>
+              </ul>
+            </li>
+            <li>Add the <code>'dataform'</code> module as a dependency:
+              <pre class="prettyprint">angular.module('myModule', ['dataform'])</pre>
+            </li>
+          </ol>
+        </section>
+        
+        <section id="directives-tag" ng-controller="TagCtrl">
+          <div class="page-header">
+            <h1>Tags</h1>
+          </div>
+          <div class="row">
+            <div class="span6">
+              <h3>What?</h3>
+              <p>A tag list bound to an array that lets you add/remove tags and customize the way tags are displayed.</p>
+              <ol df-tag-list tags="tags">
+                <li df-tag ng-repeat="tag in tags">
+                  <a ng-href="#{{tag}}">{{tag}}</a>
+                </li>
+                <li df-tag-add></li>
+              </ol>
+            </div>
+            <div class="span6">
+              <h3>How?</h3>
+              <pre class="prettyprint" ng-non-bindable>
+&lt;ol df-tag-list tags="tags"&gt;
+  &lt;li df-tag ng-repeat="tag in tags"&gt;
+    &lt;a ng-href="#{{tag}}"&gt;{{tag}}&lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li df-tag-add&gt;&lt;/li&gt;
+&lt;/ol&gt;</pre>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>

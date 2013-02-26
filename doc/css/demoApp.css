@@ -1,0 +1,31 @@
+.df-tag-wrap, [df-tag-add] button {
+  border-radius: 3px;
+  border: solid 1px #bbb;
+  margin: 4px;
+  padding: 1px 6px;
+}
+[df-tag-list] i {
+  opacity: 0.3;
+}
+[df-tag-list] .df-tag-wrap:hover i, [df-tag-list] [df-tag-add]:hover i {
+  opacity: 0.7;
+}
+.df-tag-wrap a {
+  vertical-align: middle;
+}
+[df-tag-add] button {
+  background: none;
+  color: #888;
+  padding: 1px 10px;
+  margin: 0;
+}
+[df-tag-add]:hover button {
+  border-color: #888;
+  color: #555;
+}
+[df-tag-add] input {
+  padding: 1px 4px;
+  border: solid 1px #bbb;
+  border-radius: 3px;
+  width: 7em;
+}
