@@ -1,0 +1,15 @@
+{
+  "author": "Angular Dataform Team",
+  "name": "angular-dataform",
+  "description": "Angular Dataform - Reliable, componentized data form controls for AngularJS",
+  "version": "0.0.1",
+  "homepage": "https://github.com/blendlabs/angular-dataform",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/blendlabs/angular-dataform.git"
+  },
+  "main": "./build/angular-dataform.min.js",
+  "dependencies": {
+    "angular": ">= 1.1.3"
+  }
+}
