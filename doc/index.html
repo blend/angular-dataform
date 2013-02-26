@@ -125,7 +125,7 @@
             <div class="span6">
               <h3>What?</h3>
               <p>A tag list bound to an array that lets you add/remove tags and customize the way tags are displayed.</p>
-              <ol df-tag-list tags="tags">
+              <ol df-tag-list>
                 <li df-tag ng-repeat="tag in tags">
                   <a ng-href="#{{tag}}">{{tag}}</a>
                 </li>
@@ -135,7 +135,7 @@
             <div class="span6">
               <h3>How?</h3>
               <pre class="prettyprint" ng-non-bindable>
-&lt;ol df-tag-list tags="tags"&gt;
+&lt;ol df-tag-list&gt;
   &lt;li df-tag ng-repeat="tag in tags"&gt;
     &lt;a ng-href="#{{tag}}"&gt;{{tag}}&lt;/a&gt;
   &lt;/li&gt;
