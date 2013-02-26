@@ -29,7 +29,7 @@ module.exports = function (grunt) {
         stripBanners: true
       },
       dist: {
-        src: ['modules/**/*.js', '!modules/**/test/*.js'],
+        src: ['common/module.js', 'modules/**/*.js', '!modules/**/test/*.js'],
         dest: 'dist/<%= pkg.name %>.js'
       }
     },
@@ -44,7 +44,7 @@ module.exports = function (grunt) {
     },
     recess: {
       dist: {
-        src: ['common/**/*.less'],
+        src: ['common/**/*.less', 'modules/**/*.less'],
         dest: 'dist/<%= pkg.name %>.css',
         options: {
           compile: true
@@ -70,7 +70,7 @@ module.exports = function (grunt) {
       }
     },
     watch: {
-      files: ['modules/**/*.js', 'common/**/*.js'],
+      files: ['modules/**/*.js', 'modules/**/*.less', 'common/**/*.js', 'common/**/*.less'],
       tasks: ['build', 'test']
     }
   });
