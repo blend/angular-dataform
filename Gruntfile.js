@@ -101,7 +101,7 @@ module.exports = function (grunt) {
       grunt.config('recess.dist.src', lessBuildFiles.concat(grunt.config('recess.dist.src')));
     }
 
-    grunt.task.run(['jshint', 'concat', 'uglify', 'recess:dist', 'recess:min']);
+    grunt.task.run(['jshint', 'concat', 'recess:dist']);
   });
 
   grunt.registerTask('server', 'start testacular server', function () {
