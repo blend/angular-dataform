@@ -18,11 +18,23 @@ angular.module('dataform.directives').directive('dfTagAdd', ['$document', functi
   return {
     restrict: 'A',
     link: function(scope, elem, attrs) {
-      var input = angular.element('<input placeholder=Tag>');
-      var form = angular.element('<form>').append(input);
+      
+      var form = elem.find('form');
+      if (!form.length) {
+        form = angular.element('<form>');
+        elem.append(form);
+      }
+
+      var input = elem.find('input');
+      if (!input.length) {
+        // Create default input if none exists.
+        input = angular.element('<input placeholder=Tag>');
+        form.append(input);
+      }
+
       var addButton = angular.element('<button class=add><i class="icon-plus"></i></button>');
 
-      elem.append(form, addButton);
+      elem.append(addButton);
 
       function reset() {
         input.val(undefined);
