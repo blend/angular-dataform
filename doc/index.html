@@ -128,16 +128,16 @@
               <p>A tag list bound to an array that lets you add/remove tags and customize the way tags are displayed.</p>
 
               <h4>Horizontal</h4>
-              <ol df-tag-list class=horizontal>
-                <li df-tag ng-repeat="tag in tags">
+              <ol df-tag-list items="tags" class=horizontal>
+                <li df-tag ng-repeat="tag in items">
                   <a ng-href="#{{tag}}">{{tag}}</a>
                 </li>
                 <li df-tag-add></li>
               </ol>
 
               <h4>Vertical</h4>
-              <ol df-tag-list class=vertical>
-                <li df-tag ng-repeat="tag in tags">
+              <ol df-tag-list items="tags" class=vertical>
+                <li df-tag ng-repeat="tag in items">
                   <a ng-href="#{{tag}}">{{tag}}</a>
                 </li>
                 <li df-tag-add></li>
@@ -146,8 +146,8 @@
             <div class="span6">
               <h3>How?</h3>
               <pre class="prettyprint" ng-non-bindable>
-&lt;ol df-tag-list&gt;
-  &lt;li df-tag ng-repeat="tag in tags"&gt;
+&lt;ol df-tag-list items="tags"&gt;
+  &lt;li df-tag ng-repeat="tag in items"&gt;
     &lt;a ng-href="#{{tag}}"&gt;{{tag}}&lt;/a&gt;
   &lt;/li&gt;
   &lt;li df-tag-add&gt;&lt;/li&gt;

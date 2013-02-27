@@ -3,9 +3,13 @@ angular.module('dataform.directives').directive('dfTagList', [function() {
   return {
     restrict: 'A',
     link: function(scope, elem, attrs) {
-      if (!scope.tags) {
-        throw new Error('dfTagList requires its scope to have a "tags" property');
+      if (!attrs.items) {
+        throw new Error('<df-tag-list> requires an "items" attribute');
       }
+      scope.items = [];
+      scope.$watch(attrs.items, function(items) {
+        scope.items = items;
+      });
     }
   };
 }]);
@@ -14,31 +18,26 @@ angular.module('dataform.directives').directive('dfTagAdd', ['$document', functi
   return {
     restrict: 'A',
     link: function(scope, elem, attrs) {
-      if (!scope.tags) {
-        throw new Error('dfTagAdd requires its scope to have a "tags" property');
-      }
-
       var input = angular.element('<input placeholder=Tag>');
       var form = angular.element('<form>').append(input);
       var addButton = angular.element('<button class=add><i class="icon-plus"></i></button>');
 
-      setFormVisibility();
       elem.append(form, addButton);
 
       function reset() {
         input.val(undefined);
-        addButton.show();
         setFormVisibility();
       }
 
       function setFormVisibility() {
-        if (!scope.tags || scope.tags.length === 0) {
+        if (!scope.items || scope.items.length === 0) {
           elem.addClass('empty');
           form.show();
           addButton.hide();
         } else {
           elem.removeClass('empty');
           form.hide();
+          addButton.show();
         }        
       }
 
@@ -58,14 +57,14 @@ angular.module('dataform.directives').directive('dfTagAdd', ['$document', functi
 
       form.on('submit', function($event) {
         $event.preventDefault();
-        scope.tags = scope.tags || [];
+        scope.items = scope.items || [];
         scope.$apply(function() {
-          scope.tags.push(input.val());
+          scope.items.push(input.val());
         });
         reset();
       });
 
-      scope.$watch('tags.length', setFormVisibility);
+      scope.$watch('items.length', setFormVisibility);
     }
   };  
 }]);
@@ -74,8 +73,8 @@ angular.module('dataform.directives').directive('dfTag', [function() {
   return {
     restrict: 'EAC',
     link: function(scope, elem, attrs) {
-      if (!scope.tags) {
-        throw new Error('dfTag requires its scope to have a "tags" property');
+      if (!scope.items) {
+        throw new Error('dfTag requires its scope to have an "items" property');
       }
 
       var wrapper = angular.element('<span class="df-tag-wrap">');
@@ -86,8 +85,7 @@ angular.module('dataform.directives').directive('dfTag', [function() {
 
       removeButton.on('click', function($event) {
         scope.$apply(function() {
-          // TODO: un-hardcode "tags" property name
-          scope.tags.splice(scope.$index, 1);
+          scope.items.splice(scope.$index, 1);
         });
       });
     }

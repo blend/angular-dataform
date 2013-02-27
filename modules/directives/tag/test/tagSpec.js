@@ -11,7 +11,7 @@ describe('dfTagList', function() {
   }));
 
   describe('compiling this directive', function() {
-    it('should throw an error if we have no $scope.tags', function() {
+    it('should throw an error if there is no items attribute', function() {
       function compile() {
         $compile('<ol df-tag-list></div>')(scope);
       }
@@ -32,23 +32,16 @@ describe('dfTagAdd', function() {
   }));
 
   describe('compiling this directive', function() {
-    it('should throw an error if we have no $scope.tags', function() {
-      function compile() {
-        $compile('<div df-tag-add></div>')(scope);
-      }
-
-      expect(compile).toThrow();
-    });
     it('should construct proper DOM structure', function() {
-      scope.tags = ['foo'];
+      scope.items = ['foo'];
       scope.$digest();
       var element = $compile('<div df-tag-add></div>')(scope);
-      expect(element.html()).toBe('<form style="display: none;"><input placeholder="Tag"></form><button class="add"><i class="icon-plus"></i></button>');
+      expect(element.html()).toBe('<form><input placeholder="Tag"></form><button class="add"><i class="icon-plus"></i></button>');
     });
   });
   describe('when the tags array begins empty', function() {
     it('should show the input and hide the + button', function() {
-      scope.tags = [];
+      scope.items = [];
       var element = $compile('<div df-tag-add></div>')(scope);
       scope.$digest();
       expect(element.find('input').css('display')).toBe('');
@@ -57,10 +50,10 @@ describe('dfTagAdd', function() {
   });
   describe('when the tags array is emptied (but does not begin empty)', function() {
     it('should show the input and hide the + button', function() {
-      scope.tags = ['foo'];
+      scope.items = ['foo'];
       var element = $compile('<div df-tag-add></div>')(scope);
       scope.$digest();
-      scope.tags.pop();
+      scope.items.pop();
       scope.$digest();
       expect(element.find('input').css('display')).toBe('');
       expect(element.find('button').css('display')).toBe('none');
@@ -68,7 +61,7 @@ describe('dfTagAdd', function() {
   });
   describe('after clicking +', function() {
     it('should hide the + button and show the input', function() {
-      scope.tags = ['foo'];
+      scope.items = ['foo'];
       var element = $compile('<div df-tag-add></div>')(scope);
       scope.$digest();
       element.find('button.add').click();
@@ -76,7 +69,7 @@ describe('dfTagAdd', function() {
       expect(element.find('button.add').css('display')).toBe('none');
     });
     it('de-focusing the input should clear and hide the input and show the + button', function() {
-      scope.tags = ['foo'];
+      scope.items = ['foo'];
       var element = $compile('<div df-tag-add></div>')(scope);
       scope.$digest();
       element.find('button.add').click();
@@ -100,7 +93,7 @@ describe('dfTag', function() {
   }));
 
   describe('compiling this directive', function() {
-    it('should throw an error if we have no $scope.tags', function() {
+    it('should throw an error if we have no $scope.items', function() {
       function compile() {
         $compile('<div df-tag>foo</div>')(scope);
       }
@@ -108,7 +101,7 @@ describe('dfTag', function() {
       expect(compile).toThrow();
     });
     it('should construct proper DOM structure', function() {
-      scope.tags = ['foo'];
+      scope.items = ['foo'];
       scope.$digest();
       var element = $compile('<div df-tag>bar</div>')(scope);
       expect(element.html()).toBe('<span class="df-tag-wrap">bar<button class="remove"><i class="icon-remove"></i></button></span>');
@@ -116,11 +109,11 @@ describe('dfTag', function() {
   });
   describe('clicking on the remove button', function() {
     it('should remove the tag from the parent scope tags array', function() {
-      scope.tags = ['foo'];
+      scope.items = ['foo'];
       var element = $compile('<div df-tag>bar</div>')(scope);
       scope.$digest();
       element.find('button.remove').click();
-      expect(scope.tags).toEqual([]);
+      expect(scope.items).toEqual([]);
     });
   });
 });
