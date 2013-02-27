@@ -36,6 +36,7 @@
                 </a>
                 <ul class="dropdown-menu">
                   <li><a scrollto href="#directives-tag">Tag</a></li>
+                  <li><a scrollto href="#directives-object-input">Object Input</a></li>
                 </ul>
               </li>
             </ul>
@@ -141,6 +142,36 @@
   &lt;/li&gt;
   &lt;li df-tag-add&gt;&lt;/li&gt;
 &lt;/ol&gt;</pre>
+            </div>
+          </div>
+        </section>
+
+        <section id="directives-object-input" ng-controller="ObjectInputCtrl">
+          <div class="page-header">
+            <h1>Object Input</h1>
+          </div>
+          <div class="row">
+            <div class="span6">
+              <h3>What?</h3>
+              <p>An input field that has an object-valued ngModel and displays one of the object's fields.</p>
+              <form class="form-horizontal">
+                <div class="control-group">
+                  <label for="object-input" class="control-label">Object input:</label>
+                  <div class="controls"><input id=object-input df-object-input ng-model=obj display-field="color"></div>
+                </div>
+                <div class="control-group">
+                  <label for="normal-input" class="control-label">Normal input:</label>
+                  <div class="controls"><input id=normal-input ng-model=obj></div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">Object JSON:</label>
+                  <div class="controls"><code>{{obj|json}}</code></div>
+                </div>
+              </form>
+            </div>
+            <div class="span6">
+              <h3>How?</h3>
+              <pre class="prettyprint" ng-non-bindable>&lt;input df-object-input ng-model=obj display-field="color"&gt;</pre>
             </div>
           </div>
         </section>

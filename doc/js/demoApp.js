@@ -23,3 +23,7 @@ angular.module('demoApp', ['dataform'], function($locationProvider) {
 function TagCtrl($scope) {
   $scope.tags = ['Alice', 'Bob', 'Carol'];
 }
+
+function ObjectInputCtrl($scope) {
+  $scope.obj = {color: 'Blue'};
+}
