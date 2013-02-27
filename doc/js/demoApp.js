@@ -27,3 +27,10 @@ function TagCtrl($scope) {
 function ObjectInputCtrl($scope) {
   $scope.obj = {color: 'Blue', user: 'Alice'};
 }
+
+
+// Integrations
+
+function ObjectTagsCtrl($scope) {
+  $scope.colors = [{color: 'Red'}, {color: 'Green'}, {color: 'Blue'}];
+}

@@ -39,6 +39,15 @@
                   <li><a scrollto href="#directives-object-input">Object Input</a></li>
                 </ul>
               </li>
+              <li class="dropdown">
+                <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                  Integrations
+                  <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a scrollto href="#integrations-object-tags">Object Tags</a></li>
+                </ul>
+              </li>
             </ul>
             <ul class="pull-right nav">
               <li><a href="https://github.com/blendlabs/angular-dataform/graphs/contributors">Contributors</a></li>
@@ -183,6 +192,27 @@
               <h3>How?</h3>
               <pre class="prettyprint" ng-non-bindable>&lt;input df-object-input ng-model=obj display-field="color"&gt;</pre>
             </div>
+          </div>
+        </section>
+
+        <section id="integrations-object-tags" ng-controller="ObjectTagsCtrl">
+          <div class="page-header">
+            <h1>Object Tags</h1>
+          </div>
+          <div class="row">
+            <div class="span6">
+              <h3>What?</h3>
+              <p>Display and add tags that represent objects, not strings.</p>
+            </div>
+            <ol df-tag-list items="colors" class=horizontal>
+              <li df-tag ng-repeat="tag in items">
+                <a ng-href="#{{tag.color}}">{{tag.color}}</a>
+              </li>
+              <li df-tag-add ng-model="newTag" ng-init="newTag={color:''}">
+                <form><input df-object-input ng-model="newTag" display-field="color" placeholder="Color"></form>
+              </li>
+            </ol>
+            <p>Colors: {{colors}}</p>
           </div>
         </section>
       </div>
