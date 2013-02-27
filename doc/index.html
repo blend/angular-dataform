@@ -126,6 +126,8 @@
             <div class="span6">
               <h3>What?</h3>
               <p>A tag list bound to an array that lets you add/remove tags and customize the way tags are displayed.</p>
+
+              <h4>Horizontal</h4>
               <ol df-tag-list class=horizontal>
                 <li df-tag ng-repeat="tag in tags">
                   <a ng-href="#{{tag}}">{{tag}}</a>
@@ -133,6 +135,7 @@
                 <li df-tag-add></li>
               </ol>
 
+              <h4>Vertical</h4>
               <ol df-tag-list class=vertical>
                 <li df-tag ng-repeat="tag in tags">
                   <a ng-href="#{{tag}}">{{tag}}</a>
