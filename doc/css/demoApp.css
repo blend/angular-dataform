@@ -1,14 +1,22 @@
-.df-tag-wrap {
+.vertical .df-tag-wrap {
   display: inline-block;
   min-width: 100px;
 }
 [df-tag-list] {
   margin: 0;
   padding: 0;
+}
+[df-tag-list] form {
+  margin: 0;
+}
+[df-tag-list].vertical {
   min-height: 125px;
 }
 [df-tag-list] li {
   margin: 4px;
+}
+[df-tag-list].horizontal li {
+  display: inline-block;
 }
 [df-tag-list] .df-tag-wrap i {
   opacity: 0;
@@ -22,7 +30,10 @@
 .df-tag-wrap a {
   vertical-align: middle;
 }
-[df-tag-add] button {
+.horizontal .df-tag-wrap {
+  padding: 1px 6px;
+}
+[df-tag-add] button, .horizontal .df-tag-wrap {
   border-radius: 3px;
   border: solid 1px #bbb;
   background: none;
