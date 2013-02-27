@@ -17,8 +17,8 @@ angular.module('dataform.directives').directive('dfTagList', [function() {
 angular.module('dataform.directives').directive('dfTagAdd', ['$document', function($document) {
   return {
     restrict: 'A',
-    link: function(scope, elem, attrs) {
-      
+    require: '?ngModel',
+    link: function(scope, elem, attrs, ngModel) {
       var form = elem.find('form');
       if (!form.length) {
         form = angular.element('<form>');
@@ -71,7 +71,8 @@ angular.module('dataform.directives').directive('dfTagAdd', ['$document', functi
         $event.preventDefault();
         scope.items = scope.items || [];
         scope.$apply(function() {
-          scope.items.push(input.val());
+          var item = ngModel ? ngModel.$modelValue : input.val();
+          scope.items.push(item);
         });
         reset();
       });
