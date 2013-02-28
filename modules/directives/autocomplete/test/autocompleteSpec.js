@@ -25,3 +25,23 @@ describe('dfList', function() {
     });
   });
 });
+
+describe('dfDatalist', function() {
+  'use strict';
+
+  var scope, $compile;
+  beforeEach(module('dataform.directives'));
+  beforeEach(inject(function(_$rootScope_, _$compile_, _$window_) {
+    scope = _$rootScope_.$new();
+    $compile = _$compile_;
+  }));
+
+  describe('compiling this directive', function() {
+    it('should not throw an error', function() {
+      function compile() {
+        $compile('<datalist df-datalist id=foo></datalist>')(scope);
+      }
+      expect(compile).not.toThrow();
+    });
+  });
+});

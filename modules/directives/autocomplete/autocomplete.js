@@ -16,3 +16,14 @@ angular.module('dataform.directives').directive('dfList', ['$document', function
     }
   };
 }]);
+
+angular.module('dataform.directives').directive('datalist', [function() {
+  return {
+    restrict: 'E',
+    link: function(scope, elem, attrs) {
+      if (attrs.dfDatalist) {
+        // nothing yet
+      }
+    }
+  };
+}]);
