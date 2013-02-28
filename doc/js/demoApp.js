@@ -20,6 +20,31 @@ angular.module('demoApp', ['dataform'], function($locationProvider) {
   };
 }]);
 
+function AutocompleteDatalistCtrl($scope) {
+  $scope.cities = [
+    {name: 'San Francisco'},
+    {name: 'Hong Kong'},
+    {name: 'New York'},
+    {name: 'Chicago'},
+    {name: 'Palo Alto'},
+    {name: 'London'},
+    {name: 'Shanghai'},
+    {name: 'Beijing'},
+    {name: 'Tokyho'},
+    {name: 'Osaka'},
+    {name: 'Berlin'},
+    {name: 'Frankfurt'},
+    {name: 'Cairo'},
+    {name: 'Dubai'},
+    {name: 'Sydney'},
+    {name: 'Singapore'},
+    {name: 'Los Angeles'},
+    {name: 'Buenos Aires'},
+    {name: 'Mexico City'},
+    {name: 'Accra'}
+  ];
+}
+
 function TagCtrl($scope) {
   $scope.tags = ['Alice', 'Bob', 'Carol'];
 }

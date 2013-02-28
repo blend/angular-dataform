@@ -35,6 +35,7 @@
                   <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
+                  <li><a scrollto href="#directives-autocomplete-datalist">Autocomplete Datalist</a></li>
                   <li><a scrollto href="#directives-tag">Tag</a></li>
                   <li><a scrollto href="#directives-object-input">Object Input</a></li>
                 </ul>
@@ -125,6 +126,34 @@
               <pre class="prettyprint">angular.module('myModule', ['dataform'])</pre>
             </li>
           </ol>
+        </section>
+
+        <section id="directives-autocomplete-datalist" ng-controller="AutocompleteDatalistCtrl">
+          <div class="page-header">
+            <h1>Autocomplete datalist</h1>
+          </div>
+          <div class="row">
+            <div class="span6">
+              <h3>What?</h3>
+              <p>Autocomplete.</p>
+              <p>
+                <p>City name: {{cityName}}</p>
+                <input ng-model="cityName" df-list="cities" placeholder="City">
+                <datalist df-datalist id="cities">
+                  <option ng-repeat="c in cities|filter:{name:cityName}" value="{{c.name}}">{{c.name}}</option>
+                </datalist>
+              </p>
+            </div>
+            <div class="span6">
+              <h3>How?</h3>
+              <pre class="prettyprint" ng-non-bindable>
+&lt;input ng-model="cityName" df-list="cities" placeholder="City"&gt;
+&lt;datalist df-datalist id="cities"&gt;
+  &lt;option ng-repeat="c in cities|filter:{name:cityName}"
+          value="{{c.name}}"&gt;{{c.name}}&lt;/option&gt;
+&lt;/datalist&gt;</pre>
+            </div>
+          </div>
         </section>
         
         <section id="directives-tag" ng-controller="TagCtrl">
