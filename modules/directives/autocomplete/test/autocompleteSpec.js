@@ -1,6 +1,6 @@
 /*global describe, beforeEach, module, inject, it, spyOn, expect, $, console */
 
-describe('dfList', function() {
+describe('dfAutocompleteDatalist', function() {
   'use strict';
 
   var scope, $compile;
@@ -13,13 +13,13 @@ describe('dfList', function() {
   describe('compiling this directive', function() {
     it('should throw an error if there is no df-list attribute value', function() {
       function compile() {
-        $compile('<input df-list>')(scope);
+        $compile('<input df-autocomplete-datalist>')(scope);
       }
       expect(compile).toThrow();
     });
     it('should throw an error if the df-list attribute points to a nonexistent datalist', function() {
       function compile() {
-        $compile('<input df-list=foo>')(scope);
+        $compile('<input df-autocomplete-datalist=foo>')(scope);
       }
       expect(compile).toThrow();
     });

@@ -135,23 +135,31 @@
           <div class="row">
             <div class="span6">
               <h3>What?</h3>
-              <p>Autocomplete.</p>
+              <p>Adds autocomplete menus to input fields. Inspired by the HTML5 <a href="http://www.w3.org/wiki/HTML/Elements/datalist">&lt;datalist&gt; element</a>.</p>
               <p>
-                <p>City name: {{cityName}}</p>
-                <input ng-model="cityName" df-list="cities" placeholder="City">
-                <datalist df-datalist id="cities">
-                  <option ng-repeat="c in cities|filter:{name:cityName}" value="{{c.name}}">{{c.name}}</option>
-                </datalist>
+                <p>City: {{cityName}}</p>
+                <p>Query: {{query}}</p>
+                <form>
+                  <input ng-model="cityName" df-autocomplete-datalist="cities" placeholder="City">
+                  <button ng-click="cityName = null" ng-show="cityName">Reset</button>
+                </form>
+                <ol df-datalist id="cities">
+                  <li ng-repeat="c in cities|filter:{name:query}|limitTo:5" df-value="c.name">{{c.name}}</li>
+                  <li ng-show="query" df-value="query">{{query}} <span>(add new city)</span></li>
+                </ol>
               </p>
             </div>
             <div class="span6">
               <h3>How?</h3>
               <pre class="prettyprint" ng-non-bindable>
-&lt;input ng-model="cityName" df-list="cities" placeholder="City"&gt;
-&lt;datalist df-datalist id="cities"&gt;
-  &lt;option ng-repeat="c in cities|filter:{name:cityName}"
-          value="{{c.name}}"&gt;{{c.name}}&lt;/option&gt;
-&lt;/datalist&gt;</pre>
+&lt;input ng-model="cityName" df-autocomplete-datalist="cities"&gt;
+&lt;ol df-datalist id="cities"&gt;
+  &lt;li ng-repeat="c in cities|filter:{name:cityName}|limitTo:5"
+          df-value="c.name"&gt;{{c.name}}&lt;/li&gt;
+  &lt;li ng-show="query" df-value="query"&gt;
+    {{query}} &lt;span&gt;(add new city)&lt;/span&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</pre>
             </div>
           </div>
         </section>

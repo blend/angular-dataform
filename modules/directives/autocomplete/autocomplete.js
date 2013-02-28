@@ -1,29 +1,90 @@
 
-angular.module('dataform.directives').directive('dfList', ['$document', function($document) {
+angular.module('dataform.directives').directive('dfAutocompleteDatalist', ['$document', '$timeout', function($document, $timeout) {
   return {
     restrict: 'A',
     require: '?ngModel',
     link: function(scope, elem, attrs, ngModel) {
-      if (!attrs.dfList) throw new Error('df-list attribute must not be empty');
+      if (!attrs.dfAutocompleteDatalist) throw new Error('df-autocomplete-datalist attribute must not be empty');
 
-      var eDatalist = $document.find('#' + attrs.dfList);
-      if (!eDatalist.length) {
-        throw new Error('df-list attribute value "' + attrs.dfList + '" ' +
-                        'must refer to DOM ID of existing <datalist> element');
+      var $datalist = $document.find('ol[df-datalist]#' + attrs.dfAutocompleteDatalist);
+      if (!$datalist.length) {
+        throw new Error('df-autocomplete-datalist attribute value "' + attrs.dfAutocompleteDatalist + '" ' +
+                        'must refer to DOM ID of existing <ol df-datalist> element');
+      }
+      $datalist.hide();
+      var dlScope = $datalist.scope();
+
+      // Position the datalist right underneath this <input> and make it take up the full width.
+      function setDatalistPosition() {
+        var dim = angular.extend({width: elem[0].offsetWidth, height: elem[0].offsetHeight}, elem.position());
+        $datalist.css({top: dim.top + dim.height, left: dim.left, width: dim.width});
       }
 
-      elem.attr('list', attrs.dfList);
+      var handlers = {
+        select: function($event, value) {
+          $event.stopPropagation();
+          $event.preventDefault();
+
+          $datalist.hide();
+          
+          scope.$apply(function() {
+            ngModel.$setViewValue(value);
+            ngModel.$render();
+          });
+        }
+      };
+
+      function syncToDatalist() {
+        dlScope.query = ngModel.$viewValue;
+        dlScope._$ac_on = handlers;
+      }
+
+      // Listen on the input value.
+      ngModel.$viewChangeListeners.push(function() {
+        syncToDatalist();
+      });
+
+      // Listen on our ngModel value.
+      scope.$watch(attrs.ngModel, function() { syncToDatalist(); }, true);
+
+      // Show datalist when focused.
+      elem.on('focus', function($event) {
+        setDatalistPosition();
+        syncToDatalist();
+        $datalist.show();
+      });
+
+      // Hide datalist when blurred, UNLESS we're hovering the datalist.
+      // This is to avoid removing the datalist before the click event registers.
+      var $datalist_mousedOver = false;
+      $datalist.on('mouseenter', function() { $datalist_mousedOver = true; });
+      $datalist.on('mouseleave', function() { $datalist_mousedOver = false; });
+      elem.on('blur', function($event) {
+        if (!$datalist_mousedOver) {
+          $datalist.hide();
+        }
+      });
+
+      // If the element loaded in a focused state (e.g., <input autofocus>), the
+      // focus event handler won't be called unless we manually trigger it.
+      if (elem.is(':focus')) {
+        elem.trigger('focus');
+      }
     }
   };
 }]);
 
-angular.module('dataform.directives').directive('datalist', [function() {
+angular.module('dataform.directives').directive('dfDatalist', [function() {
   return {
-    restrict: 'E',
+    restrict: 'A',
     link: function(scope, elem, attrs) {
-      if (attrs.dfDatalist) {
-        // nothing yet
-      }
+      elem.addClass('df-datalist');
+
+      elem.delegate('li[df-value]', 'click', function($event) {
+        var $li = angular.element($event.currentTarget);
+        var value = $li.scope().$eval($li.attr('df-value'));
+        scope._$ac_on.select($event, value);
+      });
     }
   };
 }]);
