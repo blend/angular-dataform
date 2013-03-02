@@ -26,7 +26,7 @@ angular.module('dataform.directives').directive('dfAutocompleteDatalist', ['$doc
           $event.preventDefault();
 
           $datalist.hide();
-          
+
           scope.$apply(function() {
             ngModel.$setViewValue(value);
             ngModel.$render();
