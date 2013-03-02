@@ -68,6 +68,7 @@ angular.module('dataform.directives').directive('dfTagAdd', ['$document', functi
       });
 
       form.on('submit', function($event) {
+        input.blur();
         $event.preventDefault();
         scope.items = scope.items || [];
         scope.$apply(function() {
