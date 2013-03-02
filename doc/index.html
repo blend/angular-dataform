@@ -183,6 +183,14 @@
                 <li df-tag-add><form><input placeholder="Tag"></form></li>
               </ol>
 
+              <h4>Horizontal (add on new line)</h4>
+              <ol df-tag-list items="tags" class="horizontal add-on-new-line">
+                <li df-tag ng-repeat="tag in items">
+                  <a ng-href="#{{tag}}">{{tag}}</a>
+                </li>
+                <li df-tag-add><form><input placeholder="Tag"></form></li>
+              </ol>
+
               <h4>Vertical</h4>
               <ol df-tag-list items="tags" class=vertical>
                 <li df-tag ng-repeat="tag in items">

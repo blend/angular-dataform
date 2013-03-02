@@ -43,6 +43,9 @@
 [df-tag-list].horizontal li {
   display: inline-block;
 }
+[df-tag-list].add-on-new-line li[df-tag-add].adding {
+  display: block;
+}
 [df-tag-list] .df-tag-wrap i {
   opacity: 0;
 }

@@ -44,6 +44,7 @@ angular.module('dataform.directives').directive('dfTagAdd', ['$document', functi
         } else {
           elem.removeClass('empty');
           form.hide();
+          elem.removeClass('adding');
           addButton.show();
         }
       }
@@ -56,6 +57,7 @@ angular.module('dataform.directives').directive('dfTagAdd', ['$document', functi
       });
 
       input.on('focus', function() {
+        elem.addClass('adding');
         form.show();
         addButton.hide();
       });
