@@ -47,6 +47,7 @@
                 </a>
                 <ul class="dropdown-menu">
                   <li><a scrollto href="#integrations-object-autocomplete">Object Autocomplete</a></li>
+                  <li><a scrollto href="#integrations-object-tags-autocomplete">Object Tags Autocomplete</a></li>
                   <li><a scrollto href="#integrations-object-tags">Object Tags</a></li>
                 </ul>
               </li>
@@ -253,6 +254,42 @@
               <li ng-repeat="c in cities|filter:{name:city.name}|limitTo:5" df-value="c">{{c.name}}</li>
               <li ng-show="city.name" df-value="{name: city.name, new: true}">{{city.name}} <span>(add new city)</span></li>
             </ol>
+          </div>
+        </section>
+
+        <section id="integrations-object-tags-autocomplete" class="autocomplete-datalist"
+                 ng-controller="ObjectTagsAutocompleteCtrl" ng-init="selectedCities">
+          <div class="page-header">
+            <h1>Object Tags Autocomplete</h1>
+          </div>
+          <div class="row">
+            <div class="span6">
+              <h3>What?</h3>
+              <p>Use autocomplete to input a list of tags that represent objects.</p>
+            </div>
+            <p>Input: {{newCity}}</p>
+            <p>Cities: {{selectedCities}}</p>
+            <ol df-tag-list items="selectedCities" class="horizontal">
+              <li df-tag ng-repeat="c in items"><a ng-href="#{{c.name}}">{{c.name}}</a></li>
+              <li df-tag-add ng-model="newCity">
+                <form>
+                  <input ng-model="newCity" df-object-input display-field="name"
+                         df-autocomplete-datalist="cityObjects2"
+                         df-autocomplete-submit-on-select
+                         placeholder="City">
+                </form>
+              </li>
+            </ol>
+            <ol df-datalist id="cityObjects2">
+              <!-- Duplicates some from cityObjects2 because we want custom interactions with autocomplete. -->
+              <li ng-repeat="c in cities|filter:{name:newCity.name}|limitTo:5" df-value="c">
+                {{c.name}}
+              </li>
+              <li ng-show="newCity.name" df-value="{name: newCity.name, new: true}">
+                {{newCity.name}} <span>(add new city)</span>
+              </li>
+            </ol>
+            </p>
           </div>
         </section>
 

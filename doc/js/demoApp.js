@@ -58,6 +58,11 @@ function ObjectInputCtrl($scope) {
 
 // Integrations
 
+function ObjectTagsAutocompleteCtrl($scope) {
+  $scope.cities = angular.copy(CITIES);
+  $scope.selectedCities = angular.copy([CITIES[0], CITIES[1]]);
+}
+
 function ObjectTagsCtrl($scope) {
   $scope.colors = [{color: 'Red'}, {color: 'Green'}, {color: 'Blue'}];
 }
