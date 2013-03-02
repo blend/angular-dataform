@@ -251,17 +251,33 @@
             <div class="span6">
               <h3>What?</h3>
               <p>Autocomplete objects, not just strings.</p>
+              <p>City: {{city}}</p>
+              <form>
+                <input ng-model="city" df-object-input display-field="name"
+                       df-autocomplete-datalist="cityObjects" placeholder="City">
+                <button ng-click="city = null" ng-show="city.name">Reset</button>
+              </form>
+              <ol df-datalist id="cityObjects">
+                <li ng-repeat="c in cities|filter:{name:city.name}|limitTo:5" df-value="c">{{c.name}}</li>
+                <li ng-show="city.name" df-value="{name: city.name, new: true}">{{city.name}} <span>(add new city)</span></li>
+              </ol>
             </div>
-            <p>City: {{city}}</p>
-            <form>
-              <input ng-model="city" df-object-input display-field="name"
-                     df-autocomplete-datalist="cityObjects" placeholder="City">
-              <button ng-click="city = null" ng-show="city.name">Reset</button>
-            </form>
-            <ol df-datalist id="cityObjects">
-              <li ng-repeat="c in cities|filter:{name:city.name}|limitTo:5" df-value="c">{{c.name}}</li>
-              <li ng-show="city.name" df-value="{name: city.name, new: true}">{{city.name}} <span>(add new city)</span></li>
-            </ol>
+            <div class="span6">
+              <h3>How?</h3>
+              <pre class="prettyprint" ng-non-bindable>
+&lt;form&gt;
+  &lt;input ng-model="city" df-object-input display-field="name"
+         df-autocomplete-datalist="cityObjects" placeholder="City"&gt;
+  &lt;button ng-click="city = null" ng-show="city.name"&gt;Reset&lt;/button&gt;
+&lt;/form&gt;
+&lt;ol df-datalist id="cityObjects"&gt;
+  &lt;li ng-repeat="c in cities|filter:{name:city.name}|limitTo:5"
+      df-value="c"&gt;{{c.name}}&lt;/li&gt;
+  &lt;li ng-show="city.name" df-value="{name: city.name, new: true}"&gt;
+    {{city.name}} &lt;span&gt;(add new city)&lt;/span&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</pre>
+            </div>
           </div>
         </section>
 
@@ -274,30 +290,32 @@
             <div class="span6">
               <h3>What?</h3>
               <p>Use autocomplete to input a list of tags that represent objects.</p>
+              <p>Input: {{newCity}}</p>
+              <p>Cities: {{selectedCities}}</p>
+              <ol df-tag-list items="selectedCities" class="horizontal">
+                <li df-tag ng-repeat="c in items"><a ng-href="#{{c.name}}">{{c.name}}</a></li>
+                <li df-tag-add ng-model="newCity">
+                  <form>
+                    <input ng-model="newCity" df-object-input display-field="name"
+                           df-autocomplete-datalist="cityObjects2"
+                           df-autocomplete-submit-on-select
+                           placeholder="City">
+                  </form>
+                </li>
+              </ol>
+              <ol df-datalist id="cityObjects2">
+                <!-- Duplicates some from cityObjects2 because we want custom interactions with autocomplete. -->
+                <li ng-repeat="c in cities|filter:{name:newCity.name}|limitTo:5" df-value="c">
+                  {{c.name}}
+                </li>
+                <li ng-show="newCity.name" df-value="{name: newCity.name, new: true}">
+                  {{newCity.name}} <span>(add new city)</span>
+                </li>
+              </ol>
             </div>
-            <p>Input: {{newCity}}</p>
-            <p>Cities: {{selectedCities}}</p>
-            <ol df-tag-list items="selectedCities" class="horizontal">
-              <li df-tag ng-repeat="c in items"><a ng-href="#{{c.name}}">{{c.name}}</a></li>
-              <li df-tag-add ng-model="newCity">
-                <form>
-                  <input ng-model="newCity" df-object-input display-field="name"
-                         df-autocomplete-datalist="cityObjects2"
-                         df-autocomplete-submit-on-select
-                         placeholder="City">
-                </form>
-              </li>
-            </ol>
-            <ol df-datalist id="cityObjects2">
-              <!-- Duplicates some from cityObjects2 because we want custom interactions with autocomplete. -->
-              <li ng-repeat="c in cities|filter:{name:newCity.name}|limitTo:5" df-value="c">
-                {{c.name}}
-              </li>
-              <li ng-show="newCity.name" df-value="{name: newCity.name, new: true}">
-                {{newCity.name}} <span>(add new city)</span>
-              </li>
-            </ol>
-            </p>
+            <div class="span6">
+              <p>View source to see code.</p>
+            </div>
           </div>
         </section>
 
@@ -309,16 +327,30 @@
             <div class="span6">
               <h3>What?</h3>
               <p>Display and add tags that represent objects, not strings.</p>
+              <p>Colors: {{colors}}</p>
+              <ol df-tag-list items="colors" class=horizontal>
+                <li df-tag ng-repeat="tag in items">
+                  <a ng-href="#{{tag.color}}">{{tag.color}}</a>
+                </li>
+                <li df-tag-add ng-model="newTag" ng-init="newTag={color:''}">
+                  <form><input df-object-input ng-model="newTag" display-field="color" placeholder="Color"></form>
+                </li>
+              </ol>
             </div>
-            <p>Colors: {{colors}}</p>
-            <ol df-tag-list items="colors" class=horizontal>
-              <li df-tag ng-repeat="tag in items">
-                <a ng-href="#{{tag.color}}">{{tag.color}}</a>
-              </li>
-              <li df-tag-add ng-model="newTag" ng-init="newTag={color:''}">
-                <form><input df-object-input ng-model="newTag" display-field="color" placeholder="Color"></form>
-              </li>
-            </ol>
+            <div class="span6">
+              <pre class="prettyprint" ng-non-bindable>
+&lt;ol df-tag-list items="colors" class=horizontal&gt;
+  &lt;li df-tag ng-repeat="tag in items"&gt;
+    &lt;a ng-href="#{{tag.color}}"&gt;{{tag.color}}&lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li df-tag-add ng-model="newTag" ng-init="newTag={color:''}"&gt;
+    &lt;form&gt;
+      &lt;input ng-model="newTag" placeholder="Color"
+             df-object-input display-field="color"&gt;
+    &lt;/form&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</pre>
+            </div>
           </div>
         </section>
       </div>
