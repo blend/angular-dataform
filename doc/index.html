@@ -265,6 +265,7 @@
               <h3>What?</h3>
               <p>Display and add tags that represent objects, not strings.</p>
             </div>
+            <p>Colors: {{colors}}</p>
             <ol df-tag-list items="colors" class=horizontal>
               <li df-tag ng-repeat="tag in items">
                 <a ng-href="#{{tag.color}}">{{tag.color}}</a>
@@ -273,7 +274,6 @@
                 <form><input df-object-input ng-model="newTag" display-field="color" placeholder="Color"></form>
               </li>
             </ol>
-            <p>Colors: {{colors}}</p>
           </div>
         </section>
       </div>
