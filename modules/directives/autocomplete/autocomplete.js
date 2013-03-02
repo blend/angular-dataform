@@ -2,7 +2,7 @@
 angular.module('dataform.directives').directive('dfAutocompleteDatalist', ['$document', '$timeout', function($document, $timeout) {
   return {
     restrict: 'A',
-    require: '?ngModel',
+    require: 'ngModel',
     link: function(scope, elem, attrs, ngModel) {
       if (!attrs.dfAutocompleteDatalist) throw new Error('df-autocomplete-datalist attribute must not be empty');
 
@@ -28,8 +28,7 @@ angular.module('dataform.directives').directive('dfAutocompleteDatalist', ['$doc
           $datalist.hide();
 
           scope.$apply(function() {
-            ngModel.$setViewValue(value);
-            ngModel.$render();
+            scope[attrs.ngModel] = value;
           });
         }
       };
