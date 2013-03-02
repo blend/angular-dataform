@@ -50,7 +50,7 @@ angular.module('dataform.directives').directive('dfTagAdd', ['$document', functi
           elem.removeClass('empty');
           form.hide();
           addButton.show();
-        }        
+        }
       }
 
       addButton.on('click', function($event) {
