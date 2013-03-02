@@ -1,23 +1,23 @@
 /* Autocomplete datalist */
-#directives-autocomplete-datalist form {
+.autocomplete-datalist form {
   margin: 0;
   padding: 0;
 }
-#directives-autocomplete-datalist input {
+.autocomplete-datalist input {
   padding: 1px 2px;
 }
-#directives-autocomplete-datalist ol.df-datalist {
+.autocomplete-datalist ol.df-datalist {
   z-index: 1;
   border: solid 1px #aaa;
   background-color: white;
 }
-#directives-autocomplete-datalist ol.df-datalist li {
+.autocomplete-datalist ol.df-datalist li {
   padding: 3px 5px;
 }
-#directives-autocomplete-datalist ol.df-datalist li:hover {
+.autocomplete-datalist ol.df-datalist li:hover {
   background-color: #ccc;
 }
-#directives-autocomplete-datalist ol.df-datalist li span {
+.autocomplete-datalist ol.df-datalist li span {
   color: #999;
 }
 

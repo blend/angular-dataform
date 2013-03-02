@@ -46,6 +46,7 @@
                   <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
+                  <li><a scrollto href="#integrations-object-autocomplete">Object Autocomplete</a></li>
                   <li><a scrollto href="#integrations-object-tags">Object Tags</a></li>
                 </ul>
               </li>
@@ -128,7 +129,8 @@
           </ol>
         </section>
 
-        <section id="directives-autocomplete-datalist" ng-controller="AutocompleteDatalistCtrl">
+        <section id="directives-autocomplete-datalist" class="autocomplete-datalist"
+                 ng-controller="AutocompleteDatalistCtrl">
           <div class="page-header">
             <h1>Autocomplete datalist</h1>
           </div>
@@ -138,14 +140,13 @@
               <p>Adds autocomplete menus to input fields. Inspired by the HTML5 <a href="http://www.w3.org/wiki/HTML/Elements/datalist">&lt;datalist&gt; element</a>.</p>
               <p>
                 <p>City: {{cityName}}</p>
-                <p>Query: {{query}}</p>
                 <form>
                   <input ng-model="cityName" df-autocomplete-datalist="cities" placeholder="City">
                   <button ng-click="cityName = null" ng-show="cityName">Reset</button>
                 </form>
                 <ol df-datalist id="cities">
-                  <li ng-repeat="c in cities|filter:{name:query}|limitTo:5" df-value="c.name">{{c.name}}</li>
-                  <li ng-show="query" df-value="query">{{query}} <span>(add new city)</span></li>
+                  <li ng-repeat="c in cities|filter:{name:cityName}|limitTo:5" df-value="c.name">{{c.name}}</li>
+                  <li ng-show="cityName" df-value="cityName">{{cityName}} <span>(add new city)</span></li>
                 </ol>
               </p>
             </div>
@@ -229,6 +230,29 @@
               <h3>How?</h3>
               <pre class="prettyprint" ng-non-bindable>&lt;input df-object-input ng-model=obj display-field="color"&gt;</pre>
             </div>
+          </div>
+        </section>
+
+        <section id="integrations-object-autocomplete" class="autocomplete-datalist"
+                 ng-controller="AutocompleteDatalistCtrl">
+          <div class="page-header">
+            <h1>Object Autocomplete</h1>
+          </div>
+          <div class="row">
+            <div class="span6">
+              <h3>What?</h3>
+              <p>Autocomplete objects, not just strings.</p>
+            </div>
+            <p>City: {{city}}</p>
+            <form>
+              <input ng-model="city" df-object-input display-field="name"
+                     df-autocomplete-datalist="cityObjects" placeholder="City">
+              <button ng-click="city = null" ng-show="city.name">Reset</button>
+            </form>
+            <ol df-datalist id="cityObjects">
+              <li ng-repeat="c in cities|filter:{name:city.name}|limitTo:5" df-value="c">{{c.name}}</li>
+              <li ng-show="city.name" df-value="{name: city.name, new: true}">{{city.name}} <span>(add new city)</span></li>
+            </ol>
           </div>
         </section>
 
