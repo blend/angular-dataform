@@ -8,11 +8,9 @@ angular.module('dataform.directives').directive('dfObjectInput', [function() {
         throw new Error('dfObjectInput requires a displayField attribute');
       }
       ngModel.$parsers.push(function(s) {
-        if (!ngModel.$modelValue) {
-          ngModel.$modelValue = {};
-        }
-        ngModel.$modelValue[attrs.displayField] = s;
-        return ngModel.$modelValue;
+        var o = {};
+        o[attrs.displayField] = s;
+        return o;
       });
       ngModel.$formatters.push(function(s) {
         return s ? s[attrs.displayField] : '';

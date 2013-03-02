@@ -67,7 +67,7 @@ describe('dfObjectInput', function() {
       });
       expect(element.val()).toBe('qux');
     });
-    xdescribe('starting with a null object', function() {
+    describe('starting with a null object', function() {
       it('should create the object when the input value changes', function() {
         scope.obj = null;
         var element = $compile('<input df-object-input ng-model=obj display-field=foo />')(scope);
