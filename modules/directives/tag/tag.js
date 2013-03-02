@@ -36,11 +36,6 @@ angular.module('dataform.directives').directive('dfTagAdd', ['$document', functi
 
       elem.append(addButton);
 
-      function reset() {
-        input.val(undefined);
-        setFormVisibility();
-      }
-
       function setFormVisibility() {
         if (!scope.items || scope.items.length === 0) {
           elem.addClass('empty');
@@ -65,7 +60,10 @@ angular.module('dataform.directives').directive('dfTagAdd', ['$document', functi
         addButton.hide();
       });
 
-      input.on('blur', reset);
+      input.on('blur', function() {
+        setFormVisibility();
+        input.val(undefined);
+      });
 
       form.on('submit', function($event) {
         $event.preventDefault();
@@ -74,7 +72,16 @@ angular.module('dataform.directives').directive('dfTagAdd', ['$document', functi
           var item = ngModel ? ngModel.$modelValue : input.val();
           scope.items.push(item);
         });
-        reset();
+
+        // Reset input value
+        setFormVisibility();
+        if (ngModel) {
+          scope.$apply(function() {
+            ngModel.$setViewValue(null);
+          });
+        } else {
+          input.val(undefined);
+        }
       });
 
       scope.$watch('items.length', setFormVisibility);
