@@ -20,8 +20,7 @@ angular.module('demoApp', ['dataform'], function($locationProvider) {
   };
 }]);
 
-function AutocompleteDatalistCtrl($scope) {
-  $scope.cities = [
+var CITIES = [
     {name: 'San Francisco'},
     {name: 'Hong Kong'},
     {name: 'New York'},
@@ -42,7 +41,10 @@ function AutocompleteDatalistCtrl($scope) {
     {name: 'Buenos Aires'},
     {name: 'Mexico City'},
     {name: 'Accra'}
-  ];
+];
+
+function AutocompleteDatalistCtrl($scope) {
+  $scope.cities = angular.copy(CITIES);
 }
 
 function TagCtrl($scope) {
