@@ -67,6 +67,6 @@ For core team: if you wish to publish a new version follow these steps:
 
 1. Bump the version number inside `component.json` and `package.json`
 2. Build and test
-3. Commit the updated `component.json`, `package.json`, and `build/` folder on their own commit
+3. Commit the updated `component.json`, `package.json`, and `dist/` folder on their own commit
 4. Tag the commit: `git tag v[maj].[min].[patch]`
 5. Push the tag: `git push [angular-dataform] master --tags`
