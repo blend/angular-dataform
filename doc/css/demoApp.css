@@ -14,7 +14,7 @@
 .autocomplete-datalist ol.df-datalist li {
   padding: 3px 5px;
 }
-.autocomplete-datalist ol.df-datalist li:hover {
+.autocomplete-datalist ol.df-datalist li:hover, .autocomplete-datalist ol.df-datalist li.active {
   background-color: #ccc;
 }
 .autocomplete-datalist ol.df-datalist li span {

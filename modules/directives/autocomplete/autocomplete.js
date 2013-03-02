@@ -25,7 +25,7 @@ angular.module('dataform.directives').directive('dfAutocompleteDatalist', ['$doc
           $event.stopPropagation();
           $event.preventDefault();
 
-          $datalist.hide();
+          $datalist.trigger('hide');
 
           scope.$apply(function() {
             scope[attrs.ngModel] = value;
@@ -58,7 +58,7 @@ angular.module('dataform.directives').directive('dfAutocompleteDatalist', ['$doc
       elem.on('focus', function($event) {
         setDatalistPosition();
         syncToDatalist();
-        $datalist.show();
+        $datalist.trigger('show');
       });
 
       // Hide datalist when blurred, UNLESS we're hovering the datalist.
@@ -68,7 +68,7 @@ angular.module('dataform.directives').directive('dfAutocompleteDatalist', ['$doc
       $datalist.on('mouseleave', function() { $datalist_mousedOver = false; });
       elem.on('blur', function($event) {
         if (!$datalist_mousedOver) {
-          $datalist.hide();
+          $datalist.trigger('hide');
         }
       });
 
@@ -77,6 +77,16 @@ angular.module('dataform.directives').directive('dfAutocompleteDatalist', ['$doc
       if (elem.is(':focus')) {
         elem.trigger('focus');
       }
+
+      elem.bind('keypress', function($event) {
+        $datalist.trigger($event);
+      });
+      elem.bind('keyup', function($event) {
+        $datalist.trigger($event);
+      });
+      elem.bind('keydown', function($event) {
+        $datalist.trigger($event);
+      });
     }
   };
 }]);
@@ -91,6 +101,102 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
         var $li = angular.element($event.currentTarget);
         var value = $li.scope().$eval($li.attr('df-value'));
         scope._$ac_on.select($event, value);
+      });
+
+      elem.bind('show', function() {
+        elem.show();
+      });
+
+      elem.bind('hide', function() {
+        elem.hide();
+        scope.$apply(function() {
+          scope.activeIndex = null;
+        });
+      });
+
+      function nthItem(n) {
+        return angular.element(elem.children('li').get(n));
+      }
+
+      scope.$watch('activeIndex', function(activeIndex, prevActiveIndex) {
+        if (activeIndex === null) {
+          elem.children('li').removeClass('active');
+        } else if (typeof activeIndex === 'number') {
+          var lis = elem.children('li');
+          if (prevActiveIndex !== null) nthItem(prevActiveIndex).removeClass('active');
+          if (activeIndex !== null) nthItem(activeIndex).addClass('active');
+        }
+      });
+
+      function itemCount() {
+        return elem.children('li:visible').length;
+      }
+
+      function move($event) {
+        switch ($event.keyCode) {
+        case 13: // enter
+        case 27: // escape
+          $event.preventDefault();
+          break;
+        case 38: // up arrow
+          $event.preventDefault();
+          scope.$apply(function() {
+            if (typeof scope.activeIndex !== 'number') {
+              // do nothing, already inactive
+            } else if (scope.activeIndex === 0) {
+              // already at top; deselect
+              scope.activeIndex = null;
+            } else {
+              scope.activeIndex -= 1;
+            }
+          });
+          break;
+        case 40: // down arrow
+          $event.preventDefault();
+          scope.$apply(function() {
+            if (scope.activeIndex >= itemCount() - 1) {
+              scope.activeIndex = itemCount() - 1; // TODO: make this work when the length changes
+              // do nothing, already at bottom
+            } else if (typeof scope.activeIndex === 'number') {
+              scope.activeIndex += 1;
+            } else {
+              scope.activeIndex = 0;
+            }
+          });
+          break;
+        default:
+          elem.show();
+        }
+        $event.stopPropagation();
+      }
+
+      elem.bind('keyup', function ($event) {
+        switch ($event.keyCode) {
+        case 40: // down arrow
+        case 38: // up arrow
+        case 16: // shift
+        case 17: // ctrl
+        case 18: // alt
+          break;
+        case 13: // enter
+          if (scope.activeIndex >= 0) {
+            nthItem(scope.activeIndex).trigger('click');
+          }
+          break;
+        case 27: // escape
+          elem.trigger('hide');
+          break;
+        }
+        $event.stopPropagation();
+        $event.preventDefault();
+      });
+
+      elem.on('keypress', function($event) {
+        move($event);
+      });
+
+      elem.on('keydown', function($event) {
+        move($event);
       });
     }
   };
