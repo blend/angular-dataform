@@ -58,9 +58,20 @@ function ObjectInputCtrl($scope) {
 
 // Integrations
 
-function ObjectTagsAutocompleteCtrl($scope) {
-  $scope.cities = angular.copy(CITIES);
+function ObjectTagsAutocompleteCtrl($scope, $timeout) {
   $scope.selectedCities = angular.copy([CITIES[0], CITIES[1]]);
+
+  $scope.$watch('newCity.name', function(name) {
+    if (name && name.length >= 2) {
+      $timeout(function() { // Simulate delay
+        $scope.cities = CITIES.filter(function(c) {
+          return c.name.toLowerCase().indexOf(name.toLowerCase()) !== -1;
+        });
+      }, 500);
+    } else {
+      $scope.cities = [];
+    }
+  });
 }
 
 function ObjectTagsCtrl($scope) {

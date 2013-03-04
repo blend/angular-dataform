@@ -289,7 +289,7 @@
           <div class="row">
             <div class="span6">
               <h3>What?</h3>
-              <p>Use autocomplete to input a list of tags that represent objects.</p>
+              <p>Use autocomplete to input a list of tags that represent objects. Fetch autocomplete suggestions from an asynchronous datasource.</p>
               <p>Input: {{newCity}}</p>
               <p>Cities: {{selectedCities}}</p>
               <ol df-tag-list items="selectedCities" class="horizontal">
@@ -312,8 +312,27 @@
                   {{newCity.name}} <span>(add new city)</span>
                 </li>
               </ol>
+              <h4>Controller</h4>
+              <pre class="prettyprint">
+function CitiesCtrl($scope, $timeout) {
+  $scope.selectedCities = [];
+
+  $scope.$watch('newCity.name', function(name) {
+    if (name && name.length >= 2) {
+      $timeout(function() { // Simulate delay
+        $scope.cities = CITIES.filter(function(c) {
+          return c.name.toLowerCase().indexOf(name.toLowerCase()) !== -1;
+        });
+      }, 500);
+    } else {
+      $scope.cities = [];
+    }
+  });
+}</pre>
             </div>
-            <div class="span6"><pre class="prettyprint">
+            <div class="span6">
+              <h3>How?</h3>
+              <pre class="prettyprint">
 &lt;ol df-tag-list items="selectedCities" class="horizontal"&gt;
   &lt;li df-tag ng-repeat="c in items"&gt;&lt;a ng-href="#{{c.name}}"&gt;{{c.name}}&lt;/a&gt;&lt;/li&gt;
   &lt;li df-tag-add ng-model="newCity"&gt;
