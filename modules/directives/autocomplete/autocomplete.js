@@ -6,7 +6,11 @@ angular.module('dataform.directives').directive('dfAutocompleteDatalist', ['$doc
     link: function(scope, elem, attrs, ngModel) {
       if (!attrs.dfAutocompleteDatalist) throw new Error('df-autocomplete-datalist attribute must not be empty');
 
-      var $datalist = $document.find('ol[df-datalist]#' + attrs.dfAutocompleteDatalist);
+      var datalistSel = 'ol[df-datalist]#' + attrs.dfAutocompleteDatalist;
+      // Search for datalist by ID among siblings first so that we can have multiple datalists with
+      // the same ID in the document but still use the nearest one. TODO: this is obviously a bad workaround.
+      var matchingSiblings = elem.siblings(datalistSel);
+      var $datalist = (matchingSiblings.length > 0) ? matchingSiblings : $document.find(datalistSel);
       if (!$datalist.length) {
         throw new Error('df-autocomplete-datalist attribute value "' + attrs.dfAutocompleteDatalist + '" ' +
                         'must refer to DOM ID of existing <ol df-datalist> element');
