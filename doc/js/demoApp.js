@@ -29,7 +29,7 @@ var CITIES = [
     {name: 'London'},
     {name: 'Shanghai'},
     {name: 'Beijing'},
-    {name: 'Tokyho'},
+    {name: 'Tokyo'},
     {name: 'Osaka'},
     {name: 'Berlin'},
     {name: 'Frankfurt'},
