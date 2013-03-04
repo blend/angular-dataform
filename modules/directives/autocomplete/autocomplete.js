@@ -38,8 +38,8 @@ angular.module('dataform.directives').directive('dfAutocompleteDatalist', ['$doc
           // Allow <input ... df-autocomplete-submit-on-select> option that instructs this
           // directive to submit its parent form when the user makes a selection.
           if (attrs.hasOwnProperty('dfAutocompleteSubmitOnSelect')) {
-            if (elem.parent().is('form')) {
-              elem.parent().submit();
+            if (elem[0].form) {
+              elem[0].form.submit();
             }
           }
         }
