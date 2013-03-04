@@ -313,8 +313,26 @@
                 </li>
               </ol>
             </div>
-            <div class="span6">
-              <p>View source to see code.</p>
+            <div class="span6"><pre class="prettyprint">
+&lt;ol df-tag-list items="selectedCities" class="horizontal"&gt;
+  &lt;li df-tag ng-repeat="c in items"&gt;&lt;a ng-href="#{{c.name}}"&gt;{{c.name}}&lt;/a&gt;&lt;/li&gt;
+  &lt;li df-tag-add ng-model="newCity"&gt;
+    &lt;form&gt;
+      &lt;input ng-model="newCity" df-object-input display-field="name"
+             df-autocomplete-datalist="cityObjects2"
+             df-autocomplete-submit-on-select
+             placeholder="City"&gt;
+    &lt;/form&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+&lt;ol df-datalist id="cityObjects2"&gt;
+  &lt;li ng-repeat="c in cities|filter:{name:newCity.name}|limitTo:5" df-value="c"&gt;
+    {{c.name}}
+  &lt;/li&gt;
+  &lt;li ng-show="newCity.name" df-value="{name: newCity.name, new: true}"&gt;
+    {{newCity.name}} &lt;span&gt;(add new city)&lt;/span&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</pre>
             </div>
           </div>
         </section>
