@@ -61,6 +61,8 @@ Then, open your browser to http://localhost:8080 and run the watch command to re
 $ grunt watch
 ```
 
+To view the demo page, open up doc/index.html in your browser.
+
 ### Publishing
 
 For core team: if you wish to publish a new version follow these steps:
