@@ -10,7 +10,11 @@ angular.module('dataform.directives').directive('dfAutocompleteDatalist', ['$doc
     link: function(scope, elem, attrs, ngModel) {
       if (!attrs.dfAutocompleteDatalist) throw new Error('df-autocomplete-datalist attribute must not be empty');
 
-      var $datalist = $document.find('ol[df-datalist]#' + attrs.dfAutocompleteDatalist);
+      var datalistSel = 'ol[df-datalist]#' + attrs.dfAutocompleteDatalist;
+      // Search for datalist by ID among siblings first so that we can have multiple datalists with
+      // the same ID in the document but still use the nearest one. TODO: this is obviously a bad workaround.
+      var matchingSiblings = elem.siblings(datalistSel);
+      var $datalist = (matchingSiblings.length > 0) ? matchingSiblings : $document.find(datalistSel);
       if (!$datalist.length) {
         throw new Error('df-autocomplete-datalist attribute value "' + attrs.dfAutocompleteDatalist + '" ' +
                         'must refer to DOM ID of existing <ol df-datalist> element');
@@ -38,8 +42,8 @@ angular.module('dataform.directives').directive('dfAutocompleteDatalist', ['$doc
           // Allow <input ... df-autocomplete-submit-on-select> option that instructs this
           // directive to submit its parent form when the user makes a selection.
           if (attrs.hasOwnProperty('dfAutocompleteSubmitOnSelect')) {
-            if (elem.parent().is('form')) {
-              elem.parent().submit();
+            if (elem[0].form) {
+              elem[0].form.submit();
             }
           }
         }
@@ -297,13 +301,14 @@ angular.module('dataform.directives').directive('dfTagAdd', ['$document', functi
       });
 
       form.on('submit', function($event) {
-        input.blur();
         $event.preventDefault();
         scope.items = scope.items || [];
         scope.$apply(function() {
           var item = ngModel ? ngModel.$modelValue : input.val();
           scope.items.push(item);
         });
+
+        input.blur(); // Note (em) blur after getting the input value because "blur" handler clears value.
 
         // Reset input value
         setFormVisibility();
@@ -318,7 +323,7 @@ angular.module('dataform.directives').directive('dfTagAdd', ['$document', functi
 
       scope.$watch('items.length', setFormVisibility);
     }
-  };  
+  };
 }]);
 
 angular.module('dataform.directives').directive('dfTag', [function() {

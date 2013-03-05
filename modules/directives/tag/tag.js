@@ -68,13 +68,14 @@ angular.module('dataform.directives').directive('dfTagAdd', ['$document', functi
       });
 
       form.on('submit', function($event) {
-        input.blur();
         $event.preventDefault();
         scope.items = scope.items || [];
         scope.$apply(function() {
           var item = ngModel ? ngModel.$modelValue : input.val();
           scope.items.push(item);
         });
+
+        input.blur(); // Note (em) blur after getting the input value because "blur" handler clears value.
 
         // Reset input value
         setFormVisibility();
@@ -89,7 +90,7 @@ angular.module('dataform.directives').directive('dfTagAdd', ['$document', functi
 
       scope.$watch('items.length', setFormVisibility);
     }
-  };  
+  };
 }]);
 
 angular.module('dataform.directives').directive('dfTag', [function() {
