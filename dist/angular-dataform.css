@@ -1,43 +1,42 @@
-/**
- * import components to builds angular-dataform.css
- */
-
-
-
+/* line 1, /home/sqs/src/angular-dataform/modules/directives/autocomplete/stylesheets/autocomplete.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/sqs\/src\/angular-dataform\/modules\/directives\/autocomplete\/stylesheets\/autocomplete\.less}line{font-family:\000031}}
 ol.df-datalist {
   position: absolute;
   list-style-type: none;
   cursor: pointer;
 }
-
+/* line 5, /home/sqs/src/angular-dataform/modules/directives/autocomplete/stylesheets/autocomplete.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/sqs\/src\/angular-dataform\/modules\/directives\/autocomplete\/stylesheets\/autocomplete\.less}line{font-family:\000035}}
 ol.df-datalist,
 ol.df-datalist li {
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 /* df-tag-list */
-
+/* line 4, /home/sqs/src/angular-dataform/modules/directives/tag/stylesheets/tag.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/sqs\/src\/angular-dataform\/modules\/directives\/tag\/stylesheets\/tag\.less}line{font-family:\000034}}
 [df-tag-list],
 [df-tag-list] li {
   list-style-type: none;
 }
-
 /* df-tag-add */
-
+/* line 11, /home/sqs/src/angular-dataform/modules/directives/tag/stylesheets/tag.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/sqs\/src\/angular-dataform\/modules\/directives\/tag\/stylesheets\/tag\.less}line{font-family:\0000311}}
 [df-tag-add] form {
   display: inline-block;
 }
-
 /* df-tag */
-
+/* line 17, /home/sqs/src/angular-dataform/modules/directives/tag/stylesheets/tag.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/sqs\/src\/angular-dataform\/modules\/directives\/tag\/stylesheets\/tag\.less}line{font-family:\0000317}}
 .df-tag-wrap {
   display: inline-block;
   vertical-align: middle;
 }
-
+/* line 21, /home/sqs/src/angular-dataform/modules/directives/tag/stylesheets/tag.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/sqs\/src\/angular-dataform\/modules\/directives\/tag\/stylesheets\/tag\.less}line{font-family:\0000321}}
 .df-tag-wrap button.remove {
-  padding: 0;
   background: none;
   border: none;
+  padding: 0;
 }
