@@ -76,6 +76,7 @@ angular.module('dataform.directives').directive('dfTagAdd', ['$document', '$time
         });
 
         input.blur(); // Note (em) blur after getting the input value because "blur" handler clears value.
+        addButton.focus();
 
         // Reset input value
         setFormVisibility();
