@@ -14,7 +14,7 @@ angular.module('dataform.directives').directive('dfTagList', [function() {
   };
 }]);
 
-angular.module('dataform.directives').directive('dfTagAdd', ['$document', function($document) {
+angular.module('dataform.directives').directive('dfTagAdd', ['$document', '$timeout', function($document, $timeout) {
   return {
     restrict: 'A',
     require: '?ngModel',
@@ -63,7 +63,7 @@ angular.module('dataform.directives').directive('dfTagAdd', ['$document', functi
       });
 
       input.on('blur', function() {
-        setFormVisibility();
+        $timeout(setFormVisibility, 200);
         input.val(undefined);
       });
 

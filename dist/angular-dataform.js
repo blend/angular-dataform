@@ -43,7 +43,7 @@ angular.module('dataform.directives').directive('dfAutocompleteDatalist', ['$doc
           // directive to submit its parent form when the user makes a selection.
           if (attrs.hasOwnProperty('dfAutocompleteSubmitOnSelect')) {
             if (elem[0].form) {
-              elem[0].form.submit();
+              angular.element(elem[0].form).submit();
             }
           }
         }
@@ -247,7 +247,7 @@ angular.module('dataform.directives').directive('dfTagList', [function() {
   };
 }]);
 
-angular.module('dataform.directives').directive('dfTagAdd', ['$document', function($document) {
+angular.module('dataform.directives').directive('dfTagAdd', ['$document', '$timeout', function($document, $timeout) {
   return {
     restrict: 'A',
     require: '?ngModel',
@@ -296,7 +296,7 @@ angular.module('dataform.directives').directive('dfTagAdd', ['$document', functi
       });
 
       input.on('blur', function() {
-        setFormVisibility();
+        $timeout(setFormVisibility, 200);
         input.val(undefined);
       });
 
