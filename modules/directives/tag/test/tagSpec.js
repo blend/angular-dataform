@@ -83,6 +83,16 @@ describe('dfTagAdd', function() {
       // expect(element.find('button.add').css('display')).toNotBe('none');
     });
   });
+  describe('after submitting input value', function() {
+    it('should append value', function() {
+      scope.items = ['foo'];
+      var element = $compile('<div df-tag-add><form><input><button id="submit123">submit</button></form></div>')(scope);
+      scope.$digest();
+      element.find('input').val('bar');
+      element.find('#submit123').click();
+      expect(scope.items).toEqual(['foo','bar']);
+    });
+  });
 });
 
 describe('dfTag', function() {
