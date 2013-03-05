@@ -206,8 +206,14 @@
   &lt;li df-tag ng-repeat="tag in items"&gt;
     &lt;a ng-href="#{{tag}}"&gt;{{tag}}&lt;/a&gt;
   &lt;/li&gt;
-  &lt;li df-tag-add&gt;&lt;form&gt;&lt;input placeholder="Tag"&gt;&lt;/form&gt;&lt;/li&gt;
+  &lt;li df-tag-add&gt;&lt;/li&gt;
 &lt;/ol&gt;</pre>
+
+              <ul>
+                <li>Add <code>df-tag-list</code> and <code>items="arrayExpr"</code> to an OL or UL.</li>
+                <li>Add list items with <code>df-tag</code> (likely using <code>ng-repeat</code> to loop over <code>items</code>, which is equal to your <code>arrayExpr</code>).</li>
+                <li>If you want a way to add new tags, add a list item with <code>df-tag-add</code>. You can leave its contents empty to use the default form, or you can specify your own form (it must contain both a <code>&lt;form&gt;</code> and <code>&lt;input&gt;</code>).
+              </ul>
             </div>
           </div>
         </section>
