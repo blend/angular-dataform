@@ -86,10 +86,10 @@ describe('dfTagAdd', function() {
   describe('after submitting input value', function() {
     it('should append value', function() {
       scope.items = ['foo'];
-      var element = $compile('<div df-tag-add><form><input><button id="submit123">submit</button></form></div>')(scope);
+      var element = $compile('<div df-tag-add></div>')(scope);
       scope.$digest();
       element.find('input').val('bar');
-      element.find('#submit123').click();
+      element.find('form').trigger('submit');
       expect(scope.items).toEqual(['foo','bar']);
     });
   });
