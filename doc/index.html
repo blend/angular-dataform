@@ -338,7 +338,7 @@ function CitiesCtrl($scope, $timeout) {
             </div>
             <div class="span6">
               <h3>How?</h3>
-              <pre class="prettyprint">
+              <pre class="prettyprint" ng-non-bindable>
 &lt;ol df-tag-list items="selectedCities" class="horizontal"&gt;
   &lt;li df-tag ng-repeat="c in items"&gt;&lt;a ng-href="#{{c.name}}"&gt;{{c.name}}&lt;/a&gt;&lt;/li&gt;
   &lt;li df-tag-add ng-model="newCity"&gt;
