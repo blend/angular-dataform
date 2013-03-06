@@ -92,6 +92,16 @@ describe('dfTagAdd', function() {
       element.find('form').trigger('submit');
       expect(scope.items).toEqual(['foo','bar']);
     });
+    it('should clear input value', function() {
+      scope.items = [];
+      var element = $compile('<div df-tag-add></div>')(scope);
+      scope.$digest();
+      element.find('input').val('bar');
+      element.find('form').trigger('submit');
+      element.find('button.add').click();
+      scope.$digest();
+      expect(element.find('input').val()).toBe('');
+    });
   });
 });
 
