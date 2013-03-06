@@ -262,41 +262,43 @@ angular.module('dataform.directives').directive('dfTagAdd', ['$document', '$time
       if (!input.length) {
         // Create default input if none exists.
         input = angular.element('<input placeholder=Tag>');
-        form.append(input);
+        form.append(input); // TODO '<button class=commit style="display:none">Commit</button>'
       }
 
       var addButton = angular.element('<button class=add><i class="icon-plus"></i></button>');
 
       elem.append(addButton);
 
-      function setFormVisibility() {
-        if (!scope.items || scope.items.length === 0) {
-          elem.addClass('empty');
-          form.show();
+      var addingMode = false;
+      function setAddingMode(adding) {
+        addingMore = adding;
+        if (adding) {
+          elem.addClass('adding');
           addButton.hide();
+          form.show();
+          input.focus();
         } else {
-          elem.removeClass('empty');
-          form.hide();
           elem.removeClass('adding');
           addButton.show();
+          if (scope.items.length) {
+            form.hide();
+          }
         }
       }
 
       addButton.on('click', function($event) {
         $event.preventDefault();
-        form.show();
-        addButton.hide();
-        input.focus();
+        setAddingMode(true);
       });
 
+      var inputFocused = false;
       input.on('focus', function() {
-        elem.addClass('adding');
-        form.show();
-        addButton.hide();
+        inputFocused = true;
       });
 
       input.on('blur', function() {
-        $timeout(setFormVisibility, 200);
+        inputFocused = false;
+        setAddingMode(false);
         input.val(undefined);
       });
 
@@ -308,11 +310,10 @@ angular.module('dataform.directives').directive('dfTagAdd', ['$document', '$time
           scope.items.push(item);
         });
 
-        input.blur(); // Note (em) blur after getting the input value because "blur" handler clears value.
-        addButton.focus();
+        // Continue adding
+        setAddingMode(true);
 
         // Reset input value
-        setFormVisibility();
         if (ngModel) {
           scope.$apply(function() {
             ngModel.$setViewValue(null);
@@ -322,7 +323,19 @@ angular.module('dataform.directives').directive('dfTagAdd', ['$document', '$time
         }
       });
 
-      scope.$watch('items.length', setFormVisibility);
+      scope.$watch('items.length', function(length, prevLength) {
+        if (!length || length === 0) {
+          elem.addClass('empty');
+          form.show();
+          addButton.hide();
+        } else {
+          elem.removeClass('empty');
+          if (!addingMode) {
+            form.hide();
+            addButton.show();
+          }
+        }
+      });
     }
   };
 }]);

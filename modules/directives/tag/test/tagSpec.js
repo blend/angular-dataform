@@ -1,4 +1,4 @@
-/*global describe, beforeEach, module, inject, it, spyOn, expect, $, console */
+/*global describe, beforeEach, module, inject, it, iit, spyOn, expect, $, console */
 
 describe('dfTagList', function() {
   'use strict';
@@ -39,12 +39,21 @@ describe('dfTagAdd', function() {
       expect(element.html()).toBe('<form><input placeholder="Tag"></form><button class="add"><i class="icon-plus"></i></button>');
     });
   });
+  describe('when the tags array begins non-empty', function() {
+    it('should hide the input and show the + button', function() {
+      scope.items = ['foo'];
+      var element = $compile('<div df-tag-add></div>')(scope);
+      scope.$digest();
+      expect(element.find('form').css('display')).toBe('none');
+      expect(element.find('button').css('display')).not.toBe('none');
+    });
+  });
   describe('when the tags array begins empty', function() {
     it('should show the input and hide the + button', function() {
       scope.items = [];
       var element = $compile('<div df-tag-add></div>')(scope);
       scope.$digest();
-      expect(element.find('input').css('display')).toBe('');
+      expect(element.find('form').css('display')).not.toBe('none');
       expect(element.find('button').css('display')).toBe('none');
     });
   });
@@ -55,7 +64,7 @@ describe('dfTagAdd', function() {
       scope.$digest();
       scope.items.pop();
       scope.$digest();
-      expect(element.find('input').css('display')).toBe('');
+      expect(element.find('form').css('display')).not.toBe('none');
       expect(element.find('button').css('display')).toBe('none');
     });
   });
@@ -65,7 +74,7 @@ describe('dfTagAdd', function() {
       var element = $compile('<div df-tag-add></div>')(scope);
       scope.$digest();
       element.find('button.add').click();
-      expect(element.find('input').css('display')).toBe('');
+      expect(element.find('form').css('display')).not.toBe('none');
       expect(element.find('button.add').css('display')).toBe('none');
     });
     it('de-focusing the input should clear and hide the input and show the + button (after a timeout)', function() {
@@ -76,11 +85,8 @@ describe('dfTagAdd', function() {
       element.find('input').val('bar');
       element.find('input').blur();
       expect(element.find('input').val()).toBe('');
-      expect(element.find('input').is(':visible')).toBe(false);
-
-      // TODO: This happens asynchronously now (in a $timeout), so this
-      // synchronous test is failing.
-      // expect(element.find('button.add').css('display')).toNotBe('none');
+      expect(element.find('form').css('display')).toBe('none');
+      expect(element.find('button.add').css('display')).not.toBe('none');
     });
   });
   describe('after submitting input value', function() {
@@ -98,9 +104,19 @@ describe('dfTagAdd', function() {
       scope.$digest();
       element.find('input').val('bar');
       element.find('form').trigger('submit');
-      element.find('button.add').click();
       scope.$digest();
       expect(element.find('input').val()).toBe('');
+    });
+    iit('should show and focus input (and hide +) for adding next tag', function() {
+      scope.items = [];
+      var element = $compile('<div df-tag-add></div>')(scope);
+      scope.$digest();
+      element.find('add.button').click();
+      element.find('input').focus().val('foo');
+      element.find('form').trigger('submit');
+      scope.$digest();
+      expect(element.find('form').css('display')).not.toBe('none');
+      expect(element.find('button.add').css('display')).toBe('none');      
     });
   });
 });
