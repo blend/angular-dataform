@@ -107,7 +107,7 @@ describe('dfTagAdd', function() {
       scope.$digest();
       expect(element.find('input').val()).toBe('');
     });
-    iit('should show and focus input (and hide +) for adding next tag', function() {
+    it('should show and focus input (and hide +) for adding next tag', function() {
       scope.items = [];
       var element = $compile('<div df-tag-add></div>')(scope);
       scope.$digest();
