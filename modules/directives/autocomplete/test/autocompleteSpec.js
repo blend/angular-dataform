@@ -60,4 +60,19 @@ describe('dfDatalist', function() {
       expect(scope.activeIndex).toBeNull();
     });
   });
+  describe('clicking on item', function() {
+    it('should call back to input with the chosen value', function() {
+      scope.items = ['foo', 'bar'];
+      scope._$ac_on = {select: function() {}};
+      spyOn(scope._$ac_on, 'select');
+      var elem = $compile('<ol df-datalist><li ng-repeat="i in items" class="item{{$index}}" df-value="i">{{i}}</li></ol>')(scope);
+      scope.$digest();
+      elem.children('li.item0').click();
+      expect(scope._$ac_on.select).toHaveBeenCalled();
+      var $event = scope._$ac_on.select.mostRecentCall.args[0];
+      var itemValue = scope._$ac_on.select.mostRecentCall.args[1];
+      expect($event.type).toEqual('click');
+      expect(itemValue).toEqual('foo');
+    });
+  });
 });
