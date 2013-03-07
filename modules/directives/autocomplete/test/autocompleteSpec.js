@@ -44,4 +44,20 @@ describe('dfDatalist', function() {
       expect(compile).not.toThrow();
     });
   });
+  describe('custom events', function() {
+    it('should respond to "show" by showing', function() {
+      var elem = $compile('<ol df-datalist id=foo></ol>')(scope);
+      elem.hide();
+      expect(elem.css('display')).toBe('none');
+      elem.trigger('show');
+      expect(elem.css('display')).not.toBe('none');
+    });
+    it('should respond to "hide" by hiding and resetting activeIndex', function() {
+      scope.activeIndex = 3;
+      var elem = $compile('<ol df-datalist id=foo></ol>')(scope);
+      elem.trigger('hide');
+      expect(elem.css('display')).toBe('none');
+      expect(scope.activeIndex).toBeNull();
+    });
+  });
 });
