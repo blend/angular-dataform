@@ -39,7 +39,7 @@ describe('dfDatalist', function() {
   describe('compiling this directive', function() {
     it('should not throw an error', function() {
       function compile() {
-        $compile('<datalist df-datalist id=foo></datalist>')(scope);
+        $compile('<ol df-datalist id=foo></ol>')(scope);
       }
       expect(compile).not.toThrow();
     });
