@@ -60,8 +60,8 @@ describe('dfDatalist', function() {
       expect(scope.activeIndex).toBeNull();
     });
   });
+  var html = '<ol df-datalist><li ng-repeat="i in items" class="item{{$index}}" df-value="i">{{i}}</li></ol>';
   describe('clicking on item', function() {
-    var html = '<ol df-datalist><li ng-repeat="i in items" class="item{{$index}}" df-value="i">{{i}}</li></ol>';
     it('should call back to input with the chosen value', function() {
       scope.items = ['foo', 'bar'];
       scope._$ac_on = {select: function() {}};
