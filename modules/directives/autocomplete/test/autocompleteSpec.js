@@ -61,11 +61,12 @@ describe('dfDatalist', function() {
     });
   });
   describe('clicking on item', function() {
+    var html = '<ol df-datalist><li ng-repeat="i in items" class="item{{$index}}" df-value="i">{{i}}</li></ol>';
     it('should call back to input with the chosen value', function() {
       scope.items = ['foo', 'bar'];
       scope._$ac_on = {select: function() {}};
       spyOn(scope._$ac_on, 'select');
-      var elem = $compile('<ol df-datalist><li ng-repeat="i in items" class="item{{$index}}" df-value="i">{{i}}</li></ol>')(scope);
+      var elem = $compile(html)(scope);
       scope.$digest();
       elem.children('li.item0').click();
       expect(scope._$ac_on.select).toHaveBeenCalled();
