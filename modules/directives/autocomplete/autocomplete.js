@@ -114,7 +114,7 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
       elem.bind('hide', function() {
         elem.hide();
         scope.$apply(function() {
-          scope.activeIndex = null;
+          scope.activeIndex = undefined;
         });
       });
 
@@ -123,17 +123,17 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
       }
 
       scope.$watch('activeIndex', function(activeIndex, prevActiveIndex) {
-        if (activeIndex === null) {
+        if (!angular.isDefined(activeIndex)) {
           elem.children('li').removeClass('active');
         } else if (typeof activeIndex === 'number') {
           var lis = elem.children('li');
-          if (prevActiveIndex !== null) nthItem(prevActiveIndex).removeClass('active');
-          if (activeIndex !== null) nthItem(activeIndex).addClass('active');
+          if (angular.isDefined(prevActiveIndex)) nthItem(prevActiveIndex).removeClass('active');
+          if (angular.isDefined(activeIndex)) nthItem(activeIndex).addClass('active');
         }
       });
 
       function itemCount() {
-        return elem.children('li:visible').length;
+        return elem.children('li[df-value]').length;
       }
 
       function move($event) {
@@ -149,7 +149,7 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
               // do nothing, already inactive
             } else if (scope.activeIndex === 0) {
               // already at top; deselect
-              scope.activeIndex = null;
+              scope.activeIndex = undefined;
             } else {
               scope.activeIndex -= 1;
             }

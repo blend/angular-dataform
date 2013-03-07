@@ -1,4 +1,4 @@
-/*global describe, beforeEach, module, inject, it, spyOn, expect, $, console */
+/*global describe, beforeEach, module, inject, it, spyOn, expect, $, console, jQuery */
 
 describe('dfAutocompleteDatalist', function() {
   'use strict';
@@ -57,7 +57,7 @@ describe('dfDatalist', function() {
       var elem = $compile('<ol df-datalist id=foo></ol>')(scope);
       elem.trigger('hide');
       expect(elem.css('display')).toBe('none');
-      expect(scope.activeIndex).toBeNull();
+      expect(scope.activeIndex).toBeUndefined();
     });
   });
   var html = '<ol df-datalist><li ng-repeat="i in items" class="item{{$index}}" df-value="i">{{i}}</li></ol>';
@@ -74,6 +74,61 @@ describe('dfDatalist', function() {
       var itemValue = scope._$ac_on.select.mostRecentCall.args[1];
       expect($event.type).toEqual('click');
       expect(itemValue).toEqual('foo');
+    });
+  });
+  describe('active item selection', function() {
+    var DOWN_ARROW = 40;
+    var UP_ARROW = 38;
+    it('starts undefined', function() {
+      scope.items = ['foo'];
+      var elem = $compile(html)(scope);
+      expect(scope.activeIndex).toBeUndefined();
+    });
+    describe('down arrow', function() {
+      it('advances through items upon hitting the down arrow', function() {
+        scope.items = ['foo', 'bar'];
+        var elem = $compile(html)(scope);
+        elem.trigger(jQuery.Event('keypress', {keyCode: DOWN_ARROW}));
+        expect(scope.activeIndex).toBe(0);
+        elem.trigger(jQuery.Event('keypress', {keyCode: DOWN_ARROW}));
+        expect(scope.activeIndex).toBe(1);
+      });
+      it('does not advance beyond last item', function() {
+        scope.items = ['foo', 'bar'];
+        var elem = $compile(html)(scope);
+        elem.trigger(jQuery.Event('keypress', {keyCode: DOWN_ARROW}));
+        elem.trigger(jQuery.Event('keypress', {keyCode: DOWN_ARROW}));
+        elem.trigger(jQuery.Event('keypress', {keyCode: DOWN_ARROW}));
+        expect(scope.activeIndex).toBe(1);
+      });
+    });
+    describe('up arrow', function() {
+      it('does nothing when there is no selection', function() {
+        scope.items = ['foo', 'bar'];
+        var elem = $compile(html)(scope);
+        scope.$digest();
+        elem.trigger(jQuery.Event('keypress', {keyCode: UP_ARROW}));
+        expect(scope.activeIndex).toBeUndefined();
+      });
+      it('moves up', function() {
+        scope.items = ['foo', 'bar'];
+        var elem = $compile(html)(scope);
+        scope.activeIndex = 1;
+        scope.$digest();
+        elem.trigger(jQuery.Event('keypress', {keyCode: UP_ARROW}));
+        expect(scope.activeIndex).toBe(0);
+      });
+      it('moves up to defocus all items, but does not move up beyond', function() {
+        scope.items = ['foo', 'bar'];
+        var elem = $compile(html)(scope);
+        scope.activeIndex = 1;
+        scope.$digest();
+        elem.trigger(jQuery.Event('keypress', {keyCode: UP_ARROW}));
+        elem.trigger(jQuery.Event('keypress', {keyCode: UP_ARROW}));
+        expect(scope.activeIndex).toBeUndefined();
+        elem.trigger(jQuery.Event('keypress', {keyCode: UP_ARROW}));
+        expect(scope.activeIndex).toBeUndefined();
+      });
     });
   });
 });
