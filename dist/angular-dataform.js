@@ -307,7 +307,9 @@ angular.module('dataform.directives').directive('dfTagAdd', ['$document', '$time
         scope.items = scope.items || [];
         scope.$apply(function() {
           var item = ngModel ? ngModel.$modelValue : input.val();
-          scope.items.push(item);
+          if (item) {
+            scope.items.push(item);
+          }
         });
 
         // Continue adding

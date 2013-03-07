@@ -119,6 +119,18 @@ describe('dfTagAdd', function() {
       expect(element.find('form').css('display')).not.toBe('none');
       expect(element.find('button.add').css('display')).toBe('none');      
     });
+    it('should not add new blank values upon re-submitting the fomr', function() {
+      scope.items = [];
+      var element = $compile('<div df-tag-add></div>')(scope);
+      scope.$digest();
+      element.find('add.button').click();
+      element.find('input').focus().val('foo');
+      element.find('form').trigger('submit');
+      element.find('form').trigger('submit');
+      element.find('form').trigger('submit');
+      scope.$digest();
+      expect(scope.items).toEqual(['foo']);
+    });
   });
 });
 
