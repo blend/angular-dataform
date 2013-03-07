@@ -48,7 +48,7 @@ angular.module('dataform.directives').directive('dfTagAdd', ['$document', '$time
           elem.removeClass('adding');
           addButton.show();
           if (scope.items.length) {
-            form.hide();
+            $timeout(function() { form.hide(); }, 150);
           }
         }
       }
