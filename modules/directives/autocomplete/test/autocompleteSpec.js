@@ -1,4 +1,4 @@
-/*global describe, ddescribe, beforeEach, module, inject, it, spyOn, expect, $, console, jQuery */
+/*global describe, ddescribe, beforeEach, module, inject, it, iit, spyOn, expect, $, console, jQuery */
 
 describe('dfAutocompleteDatalist', function() {
   'use strict';
@@ -88,6 +88,7 @@ describe('dfDatalist', function() {
       it('advances through items upon hitting the down arrow', function() {
         scope.items = ['foo', 'bar'];
         var elem = $compile(html)(scope);
+        scope.$digest();
         elem.trigger(jQuery.Event('keypress', {keyCode: DOWN_ARROW}));
         expect(scope.activeIndex).toBe(0);
         elem.trigger(jQuery.Event('keypress', {keyCode: DOWN_ARROW}));
@@ -96,6 +97,7 @@ describe('dfDatalist', function() {
       it('does not advance beyond last item', function() {
         scope.items = ['foo', 'bar'];
         var elem = $compile(html)(scope);
+        scope.$digest();
         elem.trigger(jQuery.Event('keypress', {keyCode: DOWN_ARROW}));
         elem.trigger(jQuery.Event('keypress', {keyCode: DOWN_ARROW}));
         elem.trigger(jQuery.Event('keypress', {keyCode: DOWN_ARROW}));
@@ -113,8 +115,8 @@ describe('dfDatalist', function() {
       it('moves up', function() {
         scope.items = ['foo', 'bar'];
         var elem = $compile(html)(scope);
-        scope.activeIndex = 1;
         scope.$digest();
+        scope.activeIndex = 1;
         elem.trigger(jQuery.Event('keypress', {keyCode: UP_ARROW}));
         expect(scope.activeIndex).toBe(0);
       });
@@ -130,7 +132,7 @@ describe('dfDatalist', function() {
         expect(scope.activeIndex).toBeUndefined();
       });
     });
-    ddescribe('when data changes', function() {
+    describe('when data changes', function() {
       it('resets the activeIndex', function() {
         scope.items = ['foo', 'bar'];
         scope.activeIndex = 1;
