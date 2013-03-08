@@ -163,6 +163,23 @@ describe('dfDatalist', function() {
         expect(scope.activeIndex).toBeUndefined();
       });
     });
+    describe('mouse hover', function() {
+      it('selects the hovered item', function() {
+        scope.items = ['foo', 'bar'];
+        var elem = $compile(html)(scope);
+        scope.$digest();
+        var item0 = elem.children('li.item0');
+        var item1 = elem.children('li.item1');
+        item1.trigger(jQuery.Event('mouseenter'));
+        expect(scope.activeIndex).toBe(1);
+        item1.trigger(jQuery.Event('mouseleave'));
+        // Remains selected after mouseleave
+        expect(scope.activeIndex).toBe(1);
+        // Selects another item when mouseenters the other item
+        item0.trigger(jQuery.Event('mouseenter'));
+        expect(scope.activeIndex).toBe(0);
+      });
+    });
     describe('when data changes', function() {
       it('resets the activeIndex', function() {
         scope.items = ['foo', 'bar'];

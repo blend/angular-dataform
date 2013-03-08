@@ -210,6 +210,12 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
         move($event);
       });
 
+      elem.delegate('li[df-value]', 'mouseenter', function($event) {
+        scope.$apply(function() {
+          scope.activeIndex = elem.children('li[df-value]').index($event.currentTarget);
+        });
+      });
+
       // We want to know when the underlying data used to generate <li>s changes,
       // which we can approximate by determining the ngRepeat iterables used.
       angular.forEach(elem.contents(), function(node) {
