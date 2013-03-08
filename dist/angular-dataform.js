@@ -105,35 +105,42 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
     link: function(scope, elem, attrs) {
       elem.addClass('df-datalist');
 
-      elem.delegate('li[df-value]', 'click', function($event) {
-        var $li = angular.element($event.currentTarget);
+      function selectItem($li, $event) {
         var value = $li.scope().$eval($li.attr('df-value'));
         scope._$ac_on.select($event, value);
+      }
+
+      function resetActiveIndex() {
+        scope.activeIndex = attrs.dfInitialSelection;
+        if (scope.activeIndex) scope.activeIndex = parseInt(scope.activeIndex, 10);
+      }
+
+      elem.delegate('li[df-value]', 'click', function($event) {
+        selectItem(angular.element($event.currentTarget), $event);
       });
 
       elem.bind('show', function() {
         elem.show();
+        renderActiveIndex(scope.activeIndex);
       });
 
       elem.bind('hide', function() {
         elem.hide();
-        scope.$apply(function() {
-          scope.activeIndex = undefined;
-        });
+        scope.$apply(resetActiveIndex);
       });
 
       function nthItem(n) {
         return angular.element(elem.children('li[df-value]').get(n));
       }
 
+      function renderActiveIndex() {
+        elem.children('li').removeClass('active');
+        var lis = elem.children('li');
+        if (angular.isDefined(scope.activeIndex)) nthItem(scope.activeIndex).addClass('active');
+
+      }
       scope.$watch('activeIndex', function(activeIndex, prevActiveIndex) {
-        if (!angular.isDefined(activeIndex)) {
-          elem.children('li').removeClass('active');
-        } else if (typeof activeIndex === 'number') {
-          var lis = elem.children('li');
-          if (angular.isDefined(prevActiveIndex)) nthItem(prevActiveIndex).removeClass('active');
-          if (angular.isDefined(activeIndex)) nthItem(activeIndex).addClass('active');
-        }
+        renderActiveIndex();
       });
 
       function itemCount() {
@@ -152,7 +159,7 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
             if (typeof scope.activeIndex !== 'number') {
               // do nothing, already inactive
             } else if (scope.activeIndex === 0) {
-              // already at top; deselect
+              // already at top; deselect active
               scope.activeIndex = undefined;
             } else {
               scope.activeIndex -= 1;
@@ -187,8 +194,8 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
         case 18: // alt
           break;
         case 13: // enter
-          if (scope.activeIndex >= 0) {
-            nthItem(scope.activeIndex).trigger('click');
+          if (typeof scope.activeIndex === 'number') {
+            selectItem(nthItem(scope.activeIndex), $event);
           }
           break;
         case 27: // escape
@@ -207,6 +214,12 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
         move($event);
       });
 
+      elem.delegate('li[df-value]', 'mouseenter', function($event) {
+        scope.$apply(function() {
+          scope.activeIndex = elem.children('li[df-value]').index($event.currentTarget);
+        });
+      });
+
       // We want to know when the underlying data used to generate <li>s changes,
       // which we can approximate by determining the ngRepeat iterables used.
       angular.forEach(elem.contents(), function(node) {
@@ -217,7 +230,8 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
             if (rhs) {
               scope.$watch(rhs, function(v, oldv) {
                 if (v || !oldv) {
-                  scope.activeIndex = undefined;
+                  resetActiveIndex();
+                  renderActiveIndex();
                 }
               }, true);
             }
