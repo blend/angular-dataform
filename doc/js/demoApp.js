@@ -67,7 +67,7 @@ function ObjectTagsAutocompleteCtrl($scope, $timeout) {
         $scope.cities = CITIES.filter(function(c) {
           return c.name.toLowerCase().indexOf(name.toLowerCase()) !== -1;
         });
-      }, 500);
+      }, 200);
     } else {
       $scope.cities = [];
     }
