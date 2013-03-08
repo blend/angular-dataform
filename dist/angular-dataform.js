@@ -123,7 +123,7 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
       });
 
       function nthItem(n) {
-        return angular.element(elem.children('li').get(n));
+        return angular.element(elem.children('li[df-value]').get(n));
       }
 
       scope.$watch('activeIndex', function(activeIndex, prevActiveIndex) {
@@ -205,6 +205,24 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
 
       elem.on('keydown', function($event) {
         move($event);
+      });
+
+      // We want to know when the underlying data used to generate <li>s changes,
+      // which we can approximate by determining the ngRepeat iterables used.
+      angular.forEach(elem.contents(), function(node) {
+        if (node.nodeType === 8) { // Comment node
+          var m = node.nodeValue.match(/^\s*ngRepeat:\s*(.+)\s+in\s+(.*)\s*$/);
+          if (m) {
+            var rhs = m[2];
+            if (rhs) {
+              scope.$watch(rhs, function(v, oldv) {
+                if (v || !oldv) {
+                  scope.activeIndex = undefined;
+                }
+              }, true);
+            }
+          }
+        }
       });
     }
   };
