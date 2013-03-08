@@ -211,8 +211,10 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
           if (m) {
             var rhs = m[2];
             if (rhs) {
-              scope.$watch(rhs, function() {
-                scope.activeIndex = undefined;
+              scope.$watch(rhs, function(v, oldv) {
+                if (v || !oldv) {
+                  scope.activeIndex = undefined;
+                }
               }, true);
             }
           }
