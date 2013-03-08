@@ -119,7 +119,7 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
       });
 
       function nthItem(n) {
-        return angular.element(elem.children('li').get(n));
+        return angular.element(elem.children('li[df-value]').get(n));
       }
 
       scope.$watch('activeIndex', function(activeIndex, prevActiveIndex) {
