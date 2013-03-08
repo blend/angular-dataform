@@ -1,4 +1,4 @@
-/*global describe, beforeEach, module, inject, it, spyOn, expect, $, console, jQuery */
+/*global describe, ddescribe, beforeEach, module, inject, it, spyOn, expect, $, console, jQuery */
 
 describe('dfAutocompleteDatalist', function() {
   'use strict';
@@ -127,6 +127,16 @@ describe('dfDatalist', function() {
         elem.trigger(jQuery.Event('keypress', {keyCode: UP_ARROW}));
         expect(scope.activeIndex).toBeUndefined();
         elem.trigger(jQuery.Event('keypress', {keyCode: UP_ARROW}));
+        expect(scope.activeIndex).toBeUndefined();
+      });
+    });
+    ddescribe('when data changes', function() {
+      it('resets the activeIndex', function() {
+        scope.items = ['foo', 'bar'];
+        scope.activeIndex = 1;
+        var elem = $compile(html)(scope);
+        scope.items = ['foo', 'bar', 'baz'];
+        scope.$digest();
         expect(scope.activeIndex).toBeUndefined();
       });
     });
