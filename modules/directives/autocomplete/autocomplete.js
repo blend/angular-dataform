@@ -101,10 +101,13 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
     link: function(scope, elem, attrs) {
       elem.addClass('df-datalist');
 
-      elem.delegate('li[df-value]', 'click', function($event) {
-        var $li = angular.element($event.currentTarget);
+      function selectItem($li, $event) {
         var value = $li.scope().$eval($li.attr('df-value'));
         scope._$ac_on.select($event, value);
+      }
+
+      elem.delegate('li[df-value]', 'click', function($event) {
+        selectItem(angular.element($event.currentTarget), $event);
       });
 
       elem.bind('show', function() {
@@ -183,8 +186,8 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
         case 18: // alt
           break;
         case 13: // enter
-          if (scope.activeIndex >= 0) {
-            nthItem(scope.activeIndex).trigger('click');
+          if (typeof scope.activeIndex === 'number') {
+            selectItem(nthItem(scope.activeIndex), $event);
           }
           break;
         case 27: // escape

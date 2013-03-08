@@ -61,19 +61,38 @@ describe('dfDatalist', function() {
     });
   });
   var html = '<ol df-datalist><li ng-repeat="i in items" class="item{{$index}}" df-value="i">{{i}}</li></ol>';
-  describe('clicking on item', function() {
-    it('should call back to input with the chosen value', function() {
+  var ENTER_KEY = 13;
+  describe('choosing item', function() {
+    function choosingItemSetUp() {
       scope.items = ['foo', 'bar'];
       scope._$ac_on = {select: function() {}};
       spyOn(scope._$ac_on, 'select');
-      var elem = $compile(html)(scope);
-      scope.$digest();
-      elem.children('li.item0').click();
+    }
+    function expectCallbackWithValueAndEventType(val, eventType) {
       expect(scope._$ac_on.select).toHaveBeenCalled();
       var $event = scope._$ac_on.select.mostRecentCall.args[0];
       var itemValue = scope._$ac_on.select.mostRecentCall.args[1];
-      expect($event.type).toEqual('click');
-      expect(itemValue).toEqual('foo');
+      expect($event.type).toEqual(eventType);
+      expect(itemValue).toEqual(val);
+    }
+    describe('by clicking', function() {
+      it('should call back to input with the chosen value', function() {
+        choosingItemSetUp();
+        var elem = $compile(html)(scope);
+        scope.$digest();
+        elem.children('li.item0').click();
+        expectCallbackWithValueAndEventType('foo', 'click');
+      });
+    });
+    describe('by hitting enter', function() {
+      it('should call back to input with the chosen value', function() {
+        choosingItemSetUp();
+        var elem = $compile(html)(scope);
+        scope.$digest();
+        scope.activeIndex = 0;
+        elem.trigger(jQuery.Event('keyup', {keyCode: ENTER_KEY}));
+        expectCallbackWithValueAndEventType('foo', 'keyup');
+      });
     });
   });
   describe('active item selection', function() {
