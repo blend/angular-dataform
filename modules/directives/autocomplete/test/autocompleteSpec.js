@@ -60,7 +60,10 @@ describe('dfDatalist', function() {
       expect(scope.activeIndex).toBeUndefined();
     });
   });
-  var html = '<ol df-datalist><li ng-repeat="i in items" class="item{{$index}}" df-value="i">{{i}}</li></ol>';
+  function mkHtml(olAttrs) {
+    return '<ol df-datalist ' + (olAttrs || '') + '><li ng-repeat="i in items" class="item{{$index}}" df-value="i">{{i}}</li></ol>';
+  }
+  var html = mkHtml();
   var ENTER_KEY = 13;
   describe('choosing item', function() {
     function choosingItemSetUp() {
@@ -98,10 +101,19 @@ describe('dfDatalist', function() {
   describe('active item selection', function() {
     var DOWN_ARROW = 40;
     var UP_ARROW = 38;
-    it('starts undefined', function() {
-      scope.items = ['foo'];
-      var elem = $compile(html)(scope);
-      expect(scope.activeIndex).toBeUndefined();
+    describe('initial value', function() {
+      it('if unconfigured, starts undefined', function() {
+        scope.items = ['foo'];
+        var elem = $compile(html)(scope);
+        expect(scope.activeIndex).toBeUndefined();
+      });
+      it('if df-initial-index configured, starts there', function() {
+        scope.items = ['foo', 'bar'];
+        var elem = $compile(mkHtml('df-initial-selection=0'))(scope);
+        elem.data('dfInitialSelection', '0');
+        scope.$digest();
+        expect(scope.activeIndex).toBe(0);
+      });
     });
     describe('down arrow', function() {
       it('advances through items upon hitting the down arrow', function() {

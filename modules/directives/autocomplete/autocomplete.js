@@ -106,33 +106,37 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
         scope._$ac_on.select($event, value);
       }
 
+      function resetActiveIndex() {
+        scope.activeIndex = attrs.dfInitialSelection;
+        if (scope.activeIndex) scope.activeIndex = parseInt(scope.activeIndex, 10);
+      }
+
       elem.delegate('li[df-value]', 'click', function($event) {
         selectItem(angular.element($event.currentTarget), $event);
       });
 
       elem.bind('show', function() {
         elem.show();
+        renderActiveIndex(scope.activeIndex);
       });
 
       elem.bind('hide', function() {
         elem.hide();
-        scope.$apply(function() {
-          scope.activeIndex = undefined;
-        });
+        scope.$apply(resetActiveIndex);
       });
 
       function nthItem(n) {
         return angular.element(elem.children('li[df-value]').get(n));
       }
 
+      function renderActiveIndex() {
+        elem.children('li').removeClass('active');
+        var lis = elem.children('li');
+        if (angular.isDefined(scope.activeIndex)) nthItem(scope.activeIndex).addClass('active');
+
+      }
       scope.$watch('activeIndex', function(activeIndex, prevActiveIndex) {
-        if (!angular.isDefined(activeIndex)) {
-          elem.children('li').removeClass('active');
-        } else if (typeof activeIndex === 'number') {
-          var lis = elem.children('li');
-          if (angular.isDefined(prevActiveIndex)) nthItem(prevActiveIndex).removeClass('active');
-          if (angular.isDefined(activeIndex)) nthItem(activeIndex).addClass('active');
-        }
+        renderActiveIndex();
       });
 
       function itemCount() {
@@ -151,7 +155,7 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
             if (typeof scope.activeIndex !== 'number') {
               // do nothing, already inactive
             } else if (scope.activeIndex === 0) {
-              // already at top; deselect
+              // already at top; deselect active
               scope.activeIndex = undefined;
             } else {
               scope.activeIndex -= 1;
@@ -216,7 +220,8 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
             if (rhs) {
               scope.$watch(rhs, function(v, oldv) {
                 if (v || !oldv) {
-                  scope.activeIndex = undefined;
+                  resetActiveIndex();
+                  renderActiveIndex();
                 }
               }, true);
             }

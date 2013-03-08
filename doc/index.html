@@ -141,11 +141,12 @@
               <p>Adds autocomplete menus to input fields. Inspired by the HTML5 <a href="http://www.w3.org/wiki/HTML/Elements/datalist">&lt;datalist&gt; element</a>.</p>
               <p>
                 <p>City: {{cityName}}</p>
+                <p>Active index: {{activeIndex}}</p>
                 <form>
                   <input ng-model="cityName" df-autocomplete-datalist="cities" placeholder="City">
                   <button ng-click="cityName = null" ng-show="cityName">Reset</button>
                 </form>
-                <ol df-datalist id="cities">
+                <ol df-datalist id="cities" df-initial-selection=0>
                   <li ng-repeat="c in cities|filter:{name:cityName}|limitTo:5" df-value="c.name">{{c.name}}</li>
                   <li ng-show="cityName" df-value="cityName">{{cityName}} <span>(add new city)</span></li>
                 </ol>
@@ -162,6 +163,12 @@
     {{query}} &lt;span&gt;(add new city)&lt;/span&gt;
   &lt;/li&gt;
 &lt;/ol&gt;</pre>
+
+              <ul>
+                <li>Create an &lt;input&gt; with <code>df-autocomplete-datalist="some-id"</code>, where <code>#some-id</code> is the corresponding list element (below).</li>
+                <li>Create an <code>&lt;ol df-datalist id="some-id"&gt;</code>. Any list item with a <code>df-value="expr"</code> attribute will be selectable. Use <code>ng-repeat</code> or any other AngularJS/HTML to build the list of autocomplete choices.</li>
+                <li>To select the first list item by default (instead of having no selection), specify <code>df-initial-selection=0</code> on the <code>&lt;ol&gt;</code>.
+              </ul>
             </div>
           </div>
         </section>
