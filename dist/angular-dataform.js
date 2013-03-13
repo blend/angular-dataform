@@ -228,12 +228,14 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
           if (m) {
             var rhs = m[2];
             if (rhs) {
-              scope.$watch(rhs, function(v, oldv) {
+              var reactToActiveIndexChange = function(v, oldv) {
                 if (v || !oldv) {
                   resetActiveIndex();
                   renderActiveIndex();
                 }
-              }, true);
+              };
+              scope.$watch(rhs, reactToActiveIndexChange, true);
+              scope.$watch('(' + rhs + ')[0]', reactToActiveIndexChange, false);
             }
           }
         }

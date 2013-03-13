@@ -224,12 +224,17 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
           if (m) {
             var rhs = m[2];
             if (rhs) {
-              scope.$watch(rhs, function(v, oldv) {
+              var reactToActiveIndexChange = function(v, oldv) {
                 if (v || !oldv) {
                   resetActiveIndex();
                   renderActiveIndex();
                 }
-              }, true);
+              };
+
+              // Watch on both deep-equality changes and object changes. This is so that the watch triggers
+              // if the scope attribute is replaced by a DIFFERENT object that is deep-equal to the previous object.
+              scope.$watch(rhs, reactToActiveIndexChange, true);
+              scope.$watch('(' + rhs + ')[0]', reactToActiveIndexChange, false);
             }
           }
         }
