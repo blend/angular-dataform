@@ -6,18 +6,18 @@
 .autocomplete-datalist input {
   padding: 1px 2px;
 }
-.autocomplete-datalist ol.df-datalist {
+ol.df-datalist {
   z-index: 1;
   border: solid 1px #aaa;
   background-color: white;
 }
-.autocomplete-datalist ol.df-datalist li {
+ol.df-datalist li {
   padding: 3px 5px;
 }
-.autocomplete-datalist ol.df-datalist li.active {
+ol.df-datalist li.active {
   background-color: #ccc;
 }
-.autocomplete-datalist ol.df-datalist li span {
+ol.df-datalist li span {
   color: #999;
 }
 
