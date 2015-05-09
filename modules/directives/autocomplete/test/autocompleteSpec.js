@@ -96,6 +96,16 @@ describe('dfDatalist', function() {
         elem.trigger(jQuery.Event('keyup', {keyCode: ENTER_KEY}));
         expectCallbackWithValueAndEventType('foo', 'keyup');
       });
+      it('should not throw error when there are no items', function() {
+        scope.items = [];
+        scope._$ac_on = {select: function() {}};
+        spyOn(scope._$ac_on, 'select');
+
+        var elem = $compile(html)(scope);
+        scope.$digest();
+        scope.activeIndex = 0;
+        elem.trigger(jQuery.Event('keyup', {keyCode: ENTER_KEY}));
+      });
     });
   });
   describe('active item selection', function() {
