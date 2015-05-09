@@ -102,7 +102,10 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
       elem.addClass('df-datalist');
 
       function selectItem($li, $event) {
-        var value = $li.scope().$eval($li.attr('df-value'));
+        var scope = $li.scope();
+        if (!scope) return;
+
+        var value = scope.$eval($li.attr('df-value'));
         scope._$ac_on.select($event, value);
       }
 
