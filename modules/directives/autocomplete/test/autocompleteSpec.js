@@ -66,8 +66,8 @@ describe('dfDatalist', function() {
   var html = mkHtml();
   var ENTER_KEY = 13;
   describe('choosing item', function() {
-    function choosingItemSetUp() {
-      scope.items = ['foo', 'bar'];
+    function choosingItemSetUp(items) {
+      scope.items = items || ['foo', 'bar'];
       scope._$ac_on = {select: function() {}};
       spyOn(scope._$ac_on, 'select');
     }
@@ -95,6 +95,13 @@ describe('dfDatalist', function() {
         scope.activeIndex = 0;
         elem.trigger(jQuery.Event('keyup', {keyCode: ENTER_KEY}));
         expectCallbackWithValueAndEventType('foo', 'keyup');
+      });
+      it('should not throw error when there are no items', function() {
+        choosingItemSetUp([]);
+        var elem = $compile(html)(scope);
+        scope.$digest();
+        scope.activeIndex = 0;
+        elem.trigger(jQuery.Event('keyup', {keyCode: ENTER_KEY}));
       });
     });
   });
