@@ -20,7 +20,6 @@ angular.module('dataform.directives').directive('dfAutocompleteDatalist', ['$doc
                         'must refer to DOM ID of existing <ol df-datalist> element');
       }
       $datalist.hide();
-      var dlScope = $datalist.scope();
 
       // Position the datalist right underneath this <input> and make it take up the full width.
       function setDatalistPosition() {
@@ -50,8 +49,8 @@ angular.module('dataform.directives').directive('dfAutocompleteDatalist', ['$doc
       };
 
       function syncToDatalist() {
-        dlScope.query = ngModel.$viewValue;
-        dlScope._$ac_on = handlers;
+        scope.$parent.query = ngModel.$viewValue;
+        scope.$parent._$ac_on = handlers;
       }
 
       // Listen on the input value.
@@ -106,10 +105,7 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
       elem.addClass('df-datalist');
 
       function selectItem($li, $event) {
-        var scope = $li.scope();
-        if (!scope) return;
-
-        var value = scope.$eval($li.attr('df-value'));
+        var value = scope.searchResults[scope.activeIndex];
         scope._$ac_on.select($event, value);
       }
 
