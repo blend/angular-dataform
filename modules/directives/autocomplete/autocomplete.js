@@ -65,9 +65,9 @@ angular.module('dataform.directives').directive('dfAutocompleteDatalist', ['$doc
 
       // Hide datalist when blurred, UNLESS we're hovering the datalist.
       // This is to avoid removing the datalist before the click event registers.
-      var $datalist_mousedOver = scope.datalist_mousedOver = false;
-      $datalist.on('mouseenter', function() { $datalist_mousedOver = scope.datalist_mousedOver = true; });
-      $datalist.on('mouseleave', function() { $datalist_mousedOver = scope.datalist_mousedOver = false; });
+      var $datalist_mousedOver = false;
+      $datalist.on('mouseenter', function() { $datalist_mousedOver = true; });
+      $datalist.on('mouseleave', function() { $datalist_mousedOver = false; });
       elem.on('blur', function($event) {
         if (!$datalist_mousedOver) {
           $datalist.trigger('hide');
@@ -142,9 +142,7 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
       }
 
       function ensureHighlightVisible() {
-        if (scope.datalist_mousedOver) {
-          scope.ignoreMouse = true;
-        }
+        scope.ignoreMouse = true;
         var container = elem[0];
         var choices = elem.querySelectorAll('#search > li');
         if (choices.length < 1) return;
@@ -237,7 +235,7 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
 
       elem.delegate('li[df-value]', 'mouseenter', function($event) {
         scope.$apply(function() {
-          if (scope.datalist_mousedOver && scope.ignoreMouse) {
+          if (scope.ignoreMouse) {
             scope.ignoreMouse = false;
           } else {
             scope.activeIndex = elem.children('li[df-value]').index($event.currentTarget);
