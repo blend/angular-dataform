@@ -235,7 +235,7 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
         move($event);
       });
 
-      elem.delegate('li[df-value]', 'mousemove', function($event) {
+      elem.delegate('li[df-value]', 'mouseenter', function($event) {
         scope.$apply(function() {
           if (scope.datalist_mousedOver && scope.ignoreMouse) {
             scope.ignoreMouse = false;
