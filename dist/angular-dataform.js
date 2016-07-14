@@ -146,6 +146,26 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
         return elem.children('li[df-value]').length;
       }
 
+      function ensureHighlightVisible() {
+        var container = elem;
+        var choices = container.querySelectorAll('#search > li');
+        if (choices.length < 1) return;
+
+        if (scope.activeIndex < 0) {
+          return;
+        }
+
+        var highlighted = choices[scope.activeIndex];
+        var posY = highlighted.offsetTop + highlighted.clientHeight - container[0].scrollTop - 50;
+        var height = container[0].offsetHeight;
+
+        if (posY > height) {
+          container[0].scrollTop += posY - height;
+        } else if (posY < highlighted.clientHeight) {
+          container[0].scrollTop -= highlighted.clientHeight - posY;
+        }
+      }
+
       function move($event) {
         switch ($event.keyCode) {
         case 13: // enter
@@ -162,6 +182,7 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
               scope.activeIndex = undefined;
             } else {
               scope.activeIndex -= 1;
+              ensureHighlightVisible();
             }
           });
           break;
@@ -173,6 +194,7 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
               // do nothing, already at bottom
             } else if (typeof scope.activeIndex === 'number') {
               scope.activeIndex += 1;
+              ensureHighlightVisible();
             } else {
               scope.activeIndex = 0;
             }
