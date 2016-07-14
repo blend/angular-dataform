@@ -1,4 +1,3 @@
-
 angular.module('dataform.directives').directive('dfAutocompleteDatalist', ['$document', '$timeout', function($document, $timeout) {
   return {
     restrict: 'A',
@@ -13,7 +12,7 @@ angular.module('dataform.directives').directive('dfAutocompleteDatalist', ['$doc
       var $datalist = (matchingSiblings.length > 0) ? matchingSiblings : $document.find(datalistSel);
       if (!$datalist.length) {
         throw new Error('df-autocomplete-datalist attribute value "' + attrs.dfAutocompleteDatalist + '" ' +
-                        'must refer to DOM ID of existing <ol df-datalist> element');
+          'must refer to DOM ID of existing <ol df-datalist> element');
       }
       $datalist.hide();
 
@@ -66,9 +65,9 @@ angular.module('dataform.directives').directive('dfAutocompleteDatalist', ['$doc
 
       // Hide datalist when blurred, UNLESS we're hovering the datalist.
       // This is to avoid removing the datalist before the click event registers.
-      var $datalist_mousedOver = false;
-      $datalist.on('mouseenter', function() { $datalist_mousedOver = true; });
-      $datalist.on('mouseleave', function() { $datalist_mousedOver = false; });
+      var $datalist_mousedOver = scope.datalist_mousedOver = false;
+      $datalist.on('mouseenter', function() { $datalist_mousedOver = scope.datalist_mousedOver = true; });
+      $datalist.on('mouseleave', function() { $datalist_mousedOver = scope.datalist_mousedOver = false; });
       elem.on('blur', function($event) {
         if (!$datalist_mousedOver) {
           $datalist.trigger('hide');
@@ -143,8 +142,11 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
       }
 
       function ensureHighlightVisible() {
-        var container = elem;
-        var choices = container.querySelectorAll('#search > li');
+        if (scope.datalist_mousedOver) {
+          scope.ignoreMouse = true;
+        }
+        var container = elem[0];
+        var choices = elem.querySelectorAll('#search > li');
         if (choices.length < 1) return;
 
         if (scope.activeIndex < 0) {
@@ -152,72 +154,74 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
         }
 
         var highlighted = choices[scope.activeIndex];
-        var posY = highlighted.offsetTop + highlighted.clientHeight - container[0].scrollTop - 50;
-        var height = container[0].offsetHeight;
+        var posY = highlighted.offsetTop + highlighted.clientHeight - container.scrollTop - container.offsetTop;
+        var height = container.offsetHeight;
 
         if (posY > height) {
-          container[0].scrollTop += posY - height;
+          container.scrollTop += posY - height;
         } else if (posY < highlighted.clientHeight) {
-          container[0].scrollTop -= highlighted.clientHeight - posY;
+          container.scrollTop -= highlighted.clientHeight - posY;
+        } else {
+          scope.ignoreMouse = false;
         }
       }
 
       function move($event) {
         switch ($event.keyCode) {
-        case 13: // enter
-        case 27: // escape
-          $event.preventDefault();
-          break;
-        case 38: // up arrow
-          $event.preventDefault();
-          scope.$apply(function() {
-            if (typeof scope.activeIndex !== 'number') {
-              // do nothing, already inactive
-            } else if (scope.activeIndex === 0) {
-              // already at top; deselect active
-              scope.activeIndex = undefined;
-            } else {
-              scope.activeIndex -= 1;
-              ensureHighlightVisible();
-            }
-          });
-          break;
-        case 40: // down arrow
-          $event.preventDefault();
-          scope.$apply(function() {
-            if (scope.activeIndex >= itemCount() - 1) {
-              scope.activeIndex = itemCount() - 1; // TODO: make this work when the length changes
-              // do nothing, already at bottom
-            } else if (typeof scope.activeIndex === 'number') {
-              scope.activeIndex += 1;
-              ensureHighlightVisible();
-            } else {
-              scope.activeIndex = 0;
-            }
-          });
-          break;
-        default:
-          elem.show();
+          case 13: // enter
+          case 27: // escape
+            $event.preventDefault();
+            break;
+          case 38: // up arrow
+            $event.preventDefault();
+            scope.$apply(function() {
+              if (typeof scope.activeIndex !== 'number') {
+                // do nothing, already inactive
+              } else if (scope.activeIndex === 0) {
+                // already at top; deselect active
+                scope.activeIndex = undefined;
+              } else {
+                scope.activeIndex -= 1;
+                ensureHighlightVisible();
+              }
+            });
+            break;
+          case 40: // down arrow
+            $event.preventDefault();
+            scope.$apply(function() {
+              if (scope.activeIndex >= itemCount() - 1) {
+                scope.activeIndex = itemCount() - 1; // TODO: make this work when the length changes
+                // do nothing, already at bottom
+              } else if (typeof scope.activeIndex === 'number') {
+                scope.activeIndex += 1;
+                ensureHighlightVisible();
+              } else {
+                scope.activeIndex = 0;
+              }
+            });
+            break;
+          default:
+            elem.show();
         }
         $event.stopPropagation();
       }
 
       elem.bind('keyup', function ($event) {
         switch ($event.keyCode) {
-        case 40: // down arrow
-        case 38: // up arrow
-        case 16: // shift
-        case 17: // ctrl
-        case 18: // alt
-          break;
-        case 13: // enter
-          if (typeof scope.activeIndex === 'number') {
-            selectItem(nthItem(scope.activeIndex), $event);
-          }
-          break;
-        case 27: // escape
-          elem.trigger('hide');
-          break;
+          case 40: // down arrow
+          case 38: // up arrow
+          case 16: // shift
+          case 17: // ctrl
+          case 18: // alt
+            break;
+          case 13: // enter
+            if (typeof scope.activeIndex === 'number') {
+              selectItem(nthItem(scope.activeIndex), $event);
+            }
+            break;
+          case 27: // escape
+            elem.trigger('hide');
+            break;
         }
         $event.stopPropagation();
         $event.preventDefault();
@@ -231,9 +235,13 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
         move($event);
       });
 
-      elem.delegate('li[df-value]', 'mouseenter', function($event) {
+      elem.delegate('li[df-value]', 'mousemove', function($event) {
         scope.$apply(function() {
-          scope.activeIndex = elem.children('li[df-value]').index($event.currentTarget);
+          if (scope.datalist_mousedOver && scope.ignoreMouse) {
+            scope.ignoreMouse = false;
+          } else {
+            scope.activeIndex = elem.children('li[df-value]').index($event.currentTarget);
+          }
         });
       });
 
