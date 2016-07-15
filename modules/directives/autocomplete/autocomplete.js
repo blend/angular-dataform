@@ -166,60 +166,60 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
 
       function move($event) {
         switch ($event.keyCode) {
-          case 13: // enter
-          case 27: // escape
-            $event.preventDefault();
-            break;
-          case 38: // up arrow
-            $event.preventDefault();
-            scope.$apply(function() {
-              if (typeof scope.activeIndex !== 'number') {
-                // do nothing, already inactive
-              } else if (scope.activeIndex === 0) {
-                // already at top; deselect active
-                scope.activeIndex = undefined;
-              } else {
-                scope.activeIndex -= 1;
-                ensureHighlightVisible();
-              }
-            });
-            break;
-          case 40: // down arrow
-            $event.preventDefault();
-            scope.$apply(function() {
-              if (scope.activeIndex >= itemCount() - 1) {
-                scope.activeIndex = itemCount() - 1; // TODO: make this work when the length changes
-                // do nothing, already at bottom
-              } else if (typeof scope.activeIndex === 'number') {
-                scope.activeIndex += 1;
-                ensureHighlightVisible();
-              } else {
-                scope.activeIndex = 0;
-              }
-            });
-            break;
-          default:
-            elem.show();
+        case 13: // enter
+        case 27: // escape
+          $event.preventDefault();
+          break;
+        case 38: // up arrow
+          $event.preventDefault();
+          scope.$apply(function() {
+            if (typeof scope.activeIndex !== 'number') {
+              // do nothing, already inactive
+            } else if (scope.activeIndex === 0) {
+              // already at top; deselect active
+              scope.activeIndex = undefined;
+            } else {
+              scope.activeIndex -= 1;
+              ensureHighlightVisible();
+            }
+          });
+          break;
+        case 40: // down arrow
+          $event.preventDefault();
+          scope.$apply(function() {
+            if (scope.activeIndex >= itemCount() - 1) {
+              scope.activeIndex = itemCount() - 1; // TODO: make this work when the length changes
+              // do nothing, already at bottom
+            } else if (typeof scope.activeIndex === 'number') {
+              scope.activeIndex += 1;
+              ensureHighlightVisible();
+            } else {
+              scope.activeIndex = 0;
+            }
+          });
+          break;
+        default:
+          elem.show();
         }
         $event.stopPropagation();
       }
 
       elem.bind('keyup', function ($event) {
         switch ($event.keyCode) {
-          case 40: // down arrow
-          case 38: // up arrow
-          case 16: // shift
-          case 17: // ctrl
-          case 18: // alt
-            break;
-          case 13: // enter
-            if (typeof scope.activeIndex === 'number') {
-              selectItem(nthItem(scope.activeIndex), $event);
-            }
-            break;
-          case 27: // escape
-            elem.trigger('hide');
-            break;
+        case 40: // down arrow
+        case 38: // up arrow
+        case 16: // shift
+        case 17: // ctrl
+        case 18: // alt
+          break;
+        case 13: // enter
+          if (typeof scope.activeIndex === 'number') {
+            selectItem(nthItem(scope.activeIndex), $event);
+          }
+          break;
+        case 27: // escape
+          elem.trigger('hide');
+          break;
         }
         $event.stopPropagation();
         $event.preventDefault();
