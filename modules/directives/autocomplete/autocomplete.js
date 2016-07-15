@@ -12,7 +12,7 @@ angular.module('dataform.directives').directive('dfAutocompleteDatalist', ['$doc
       var $datalist = (matchingSiblings.length > 0) ? matchingSiblings : $document.find(datalistSel);
       if (!$datalist.length) {
         throw new Error('df-autocomplete-datalist attribute value "' + attrs.dfAutocompleteDatalist + '" ' +
-          'must refer to DOM ID of existing <ol df-datalist> element');
+                        'must refer to DOM ID of existing <ol df-datalist> element');
       }
       $datalist.hide();
 
