@@ -142,6 +142,29 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
         return elem.children('li[df-value]').length;
       }
 
+      function ensureHighlightVisible() {
+        scope.ignoreMouse = true;
+        var container = elem[0];
+        var choices = elem.querySelectorAll('#search > li');
+        if (choices.length < 1) return;
+
+        if (scope.activeIndex < 0) {
+          return;
+        }
+
+        var highlighted = choices[scope.activeIndex];
+        var posY = highlighted.offsetTop + highlighted.clientHeight - container.scrollTop - container.offsetTop;
+        var height = container.offsetHeight;
+
+        if (posY > height) {
+          container.scrollTop += posY - height;
+        } else if (posY < highlighted.clientHeight) {
+          container.scrollTop -= highlighted.clientHeight - posY;
+        } else {
+          scope.ignoreMouse = false;
+        }
+      }
+
       function move($event) {
         switch ($event.keyCode) {
         case 13: // enter
@@ -158,6 +181,7 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
               scope.activeIndex = undefined;
             } else {
               scope.activeIndex -= 1;
+              ensureHighlightVisible();
             }
           });
           break;
@@ -169,6 +193,7 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
               // do nothing, already at bottom
             } else if (typeof scope.activeIndex === 'number') {
               scope.activeIndex += 1;
+              ensureHighlightVisible();
             } else {
               scope.activeIndex = 0;
             }
@@ -211,7 +236,11 @@ angular.module('dataform.directives').directive('dfDatalist', [function() {
 
       elem.delegate('li[df-value]', 'mouseenter', function($event) {
         scope.$apply(function() {
-          scope.activeIndex = elem.children('li[df-value]').index($event.currentTarget);
+          if (scope.ignoreMouse) {
+            scope.ignoreMouse = false;
+          } else {
+            scope.activeIndex = elem.children('li[df-value]').index($event.currentTarget);
+          }
         });
       });
 
